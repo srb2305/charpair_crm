@@ -26,8 +26,13 @@
                     <form method="post" enctype="multipart/form-data" action="{{ route('generate_task') }}">
                     @csrf
                         <div class="form-row">
-						    <div class="form-group col-md-12">
-						      <input type="number" name="emp_id" class="form-control" required="true" placeholder="Please Enter Employee ID">
+                        	<div class="form-group col-md-12">
+						    	<select class="form-control" required="true" name="emp_id">
+						    		<option value="">Please Select Employee Name</option>
+						    		@foreach($data as $key=>$val)
+						    		<option value="{{ $val->id }}">{{ $val->name }}</option>
+						    		@endforeach
+						    	</select>
 						    </div>
 						</div>
 						<div class="form-row">

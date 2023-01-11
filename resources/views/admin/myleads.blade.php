@@ -4,10 +4,30 @@
     <div class="row layout-top-spacing">
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-6">
+                <div class="row container">
+                    <label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#demo">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>Filters
+                    <div class="collapse col-lg-12" id="demo">
+                        <div class="col-lg-4" style="float: left;">
+                            <input id="searchByDate" class="form-control flatpickr flatpickr-input active" name="date" type="text" placeholder="Select Date..">
+                        </div>
+                        <div class="col-lg-4" style="float: left;">
+
+                            <select name="review_category" id="searchByCategory" class="form-control">
+                                <option value="">Please select Category</option>
+                                 <option value="1">Start</option>
+                                 <option value="2">Complete</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="col-lg-12">
                     <a href="{{ route('leads_add') }}" class="btn btn-primary" style="float: right; margin-top: 10px; margin-left: 10px;">Add Leads</a>
-                <?php $check=Auth::user()->id ?>
-                @if ($check == 7)
+                <?php $check=Auth::user()->role_id ?>
+                @if ($check == 1)
                     <a href="{{ route('export') }}" class="btn btn-info" style="float: right; margin-top: 10px; margin-left: 10px;">Export</a>
                 @endif
                     <a href="{{ route('import_leads') }}" class="btn btn-info" style="float: right; margin-top: 10px; margin-left: 10px;">Import</a>
@@ -62,6 +82,10 @@
 @endsection
 @push('footer-script')
     <script>
+        var f3 = flatpickr(document.getElementById('searchByDate'), {
+            mode: "range"
+        });
+
  
         $(document).ready(function(){
             var dataTable = $('#myleadsTable').DataTable({

@@ -26,6 +26,10 @@ class MyLeadsController extends Controller
          $row = $_POST['start'];
          $rowperpage = $_POST['length']; // Rows display per page
 
+## Custom Field value
+        $searchByDate = $_POST['searchByDate'];
+        // $searchByCategory = $_POST['searchByCategory'];
+        
 ## Search
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
@@ -38,7 +42,6 @@ class MyLeadsController extends Controller
         $mylead=Lead::whereBetween('id', [$from, $to]);
         // dd($abc);
          $check = $mylead->where('id','!=',0);
-                   
         if (!empty($searchQuery)) {
             $check->where(function ( $q ) use ( $searchQuery ){
                 $q->orWhere('id', 'like', '%'.$searchQuery.'%')
@@ -49,7 +52,17 @@ class MyLeadsController extends Controller
         
 
 ## Total number of records with filtering
-      
+        if($searchByDate != ''){
+            $date = explode(' to ', $searchByDate);
+            if(isset($date[1])){
+                $from = $date[0];
+                $to = $date[1];
+                $check = $check->whereBetween('created_at', [$from, $to]);
+            }else{
+                $from = $date[0];
+                $check = $check->where('created_at', $from);
+            }
+        }
 
 
         $totalRecords = $check->count();

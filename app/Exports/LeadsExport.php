@@ -20,6 +20,15 @@ class LeadsExport implements FromCollection, WithMapping, WithHeadings
               $row->name,
               $row->contact,
               $row->email,
+              $row->dob,
+              $row->address,
+              $row->state,
+              $row->city,
+              $row->pincode,
+              $row->company,
+              $row->department,
+              $row->designation,
+              $row->others,
          ];
         
     }
@@ -30,13 +39,23 @@ class LeadsExport implements FromCollection, WithMapping, WithHeadings
               'name',
               'contact',
               'email',
+              'dob',
+              'address',
+              'state',
+              'city',
+              'pincode',
+              'company',
+              'department',
+              'designation',
+              'others',
          ];
         
     }
 
     public function collection()
     {
-        return Lead::all();
+        return lead::all();
+
     }
 	
 

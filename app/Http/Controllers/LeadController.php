@@ -30,16 +30,13 @@ class LeadController extends Controller
 	    }
 
     public function export() 
-    {
+    {   
         return Excel::download(new LeadsExport, 'leads.xlsx');
     }
 
     public function import(Request $request) 
-    {
-    	//  dd($request['file']);
-
+    {  
         Excel::import(new LeadsImport, $request['file']);
-        
         return redirect('leads')->with('success', 'All good!');
     }
 
@@ -48,6 +45,15 @@ class LeadController extends Controller
     	$name=$request['name'];
     	$contact=$request['contact'];
     	$email=$request['email'];
+        $dob=$request['dob'];
+        $address=$request['address'];
+        $state=$request['state'];
+        $city=$request['city'];
+        $pincode=$request['pincode'];
+        $company=$request['company'];
+        $department=$request['department'];
+        $designation=$request['designation'];
+        $others=$request['others'];
 
     	$adminid = Auth::id();
     	
@@ -55,6 +61,15 @@ class LeadController extends Controller
     			'name' => $name,
     			'contact' => $contact,
     			'email' => $email,
+                'dob' => $dob,
+                'address' => $address,
+                'state' => $state,
+                'city' => $city,
+                'pincode' => $pincode,
+                'company' => $company,
+                'department' => $department,
+                'designation' => $designation,
+                'others' => $others,
     			'added_by' => $adminid
     		  ];
 
@@ -72,14 +87,15 @@ class LeadController extends Controller
 ## Search
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
-
-         $check = Lead::where('id','!=',0);
+         $check = DB::table('leads')->leftJoin('users', function($join) {
+                    $join->on('leads.added_by', '=', 'users.id');});
+         // $check = Lead::where('id','!=',0);
                    
         if (!empty($searchQuery)) {
             $check->where(function ( $q ) use ( $searchQuery ){
-                $q->orWhere('id', 'like', '%'.$searchQuery.'%')
-                  ->orWhere('contact', 'like', '%'.$searchQuery.'%')
-                  ->orWhere('name', 'like', '%'.$searchQuery.'%');
+                $q->orWhere('leads.id', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('leads.contact', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('leads.name', 'like', '%'.$searchQuery.'%');
             });
                 }
         
@@ -94,8 +110,15 @@ class LeadController extends Controller
 ## Fetch records
         $check->skip($row);
         $check->take($rowperpage);
-        $record =  $check->get();
-
+        $record =  $check->get([
+                    'leads.id',
+                    'leads.name',
+                    'leads.contact',
+                    'leads.email',
+                    'users.name as added_byname',
+                    'leads.status',
+                    'leads.created_at'
+                ]);
         $data = array();
 
         foreach ($record as $key=>$row ) {
@@ -104,7 +127,7 @@ class LeadController extends Controller
             $name = $row->name;
             $contact = $row->contact;
             $email = $row->email;
-            $added_by = $row->added_by;
+            $added_by = $row->added_byname;
             $created_at = $row->created_at;
             if ($row->status==1) {
                 $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-primary">Active</a>';
@@ -112,8 +135,8 @@ class LeadController extends Controller
                     $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-danger">Inactive</a>';
                 }
 
-            $checkuser=Auth::user()->id; 
-            if ($checkuser == 7) {
+            $checkuser=Auth::user()->role_id; 
+            if ($checkuser == 1) {
             $data[] = array(
                 'id'=>$key+1,
                 'leadid'=>$id,
@@ -188,15 +211,15 @@ class LeadController extends Controller
        
         $html = '<div class="row">
             <div class="col-lg-12">
-                <div class="col-lg-3" style="float: left;"><b>Name :</b></div>
-                <div class="col-lg-3" style="float: left;">'.$leads->name.'</div>
+                <div class="col-lg-2" style="float: left;"><b>Name :</b></div>
+                <div class="col-lg-4" style="float: left;">'.$leads->name.'</div>
                 <div class="col-lg-3" style="float: left;"><b>Contact No. :</b></div>
                 <div class="col-lg-3" style="float: left;">'.$leads->contact.'</div>
             </div>
             
             <div class="col-lg-12">
-                <div class="col-lg-3" style="float: left;"><b>Email Id :</b></div>
-                <div class="col-lg-3" style="float: left;">'.$leads->email.'</div>
+                <div class="col-lg-2" style="float: left;"><b>Email Id :</b></div>
+                <div class="col-lg-4" style="float: left;">'.$leads->email.'</div>
                 <div class="col-lg-3" style="float: left;"><b>Added By :</b></div>
                 <div class="col-lg-3" style="float: left;">'.$leads->added_by.'</div>
             </div>';

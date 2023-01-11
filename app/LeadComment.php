@@ -7,13 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
-
-class Lead extends Model
+class LeadComment extends Model
 {
-    protected $table = "leads";
+    protected $table = "lead_comments";
     protected $fillable = [
-        'name', 'email', 'contact', 'dob','address','state','city','pincode','company','department','designation','others', 'added_by','status', 'created_at'
+        'lead_id', 'comment', 'added_by','created_at'
     ];
 }
-
-

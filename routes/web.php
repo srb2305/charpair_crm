@@ -91,3 +91,11 @@ Route::get('/task_generate','LeadTaskController@taskIndex')->name('task_generate
 
 Route::post('/generate_task','LeadTaskController@generateTask')->name('generate_task');
 
+//status update
+
+Route::get('/status_update','LeadTaskController@Index')->name('status_update');
+Route::get('/add_status','LeadTaskController@create')->name('add_status');
+Route::post('/status_add','LeadTaskController@statusAdd')->name('status_add');
+Route::post('statusTableData', 'LeadTaskController@statusTableData')->name('statusTableData');
+Route::get('/dailystatus/{id}', 'LeadTaskController@dailystatus')->name('dailystatus');
+
