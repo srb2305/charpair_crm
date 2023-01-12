@@ -11,16 +11,24 @@
                     </label>Filters
                     <div class="collapse col-lg-12" id="demo">
                         <div class="col-lg-4" style="float: left;">
-                            <input id="searchByDate" class="form-control flatpickr flatpickr-input active" name="date" type="text" placeholder="Select Date..">
+                            <select name="date" class="form-control" id="searchByDate" >
+                                    <option value="">Please Select Date</option>
+                                    @foreach($data as $key=>$val)
+                                    <option value="{{ $val->id }}">{{ $val->date_from }} to {{ $val->date_to }}</option>
+                                    @endforeach
+                                </select>
                         </div>
-                        <div class="col-lg-4" style="float: left;">
+                        <!-- <div class="col-lg-4" style="float: left;">
+                            <input id="searchByDate" class="form-control flatpickr flatpickr-input active" name="date" type="text" placeholder="Select Date..">
+                        </div> -->
+                        <!-- <div class="col-lg-4" style="float: left;">
 
                             <select name="review_category" id="searchByCategory" class="form-control">
                                 <option value="">Please select Category</option>
                                  <option value="1">Start</option>
                                  <option value="2">Complete</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 

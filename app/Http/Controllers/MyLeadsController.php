@@ -15,8 +15,10 @@ use Maatwebsite\Excel\Facades\Excel;
 class MyLeadsController extends Controller
 {
      public function index(){
-    
-    	return view('admin/myleads');
+        
+        $userid=Auth::id();
+        $data=DB::table('lead_task')->where('user_id',$userid)->get();
+    	return view('admin/myleads',compact('data'));
     }
 
     public function myLeadsTableData(Request $request){
@@ -28,6 +30,8 @@ class MyLeadsController extends Controller
 
 ## Custom Field value
         $searchByDate = $_POST['searchByDate'];
+        // $searchByLeadid = $_POST['searchByLeadid'];
+        
         // $searchByCategory = $_POST['searchByCategory'];
         
 ## Search
@@ -39,31 +43,41 @@ class MyLeadsController extends Controller
         $from=$mydata->lead_from;
         $to=$mydata->lead_to;
 
-        $mylead=Lead::whereBetween('id', [$from, $to]);
+        // $mylead=Lead::whereBetween('id', [$from, $to]);
         // dd($abc);
-         $check = $mylead->where('id','!=',0);
+        $check = Lead::whereBetween('leads.id', [$from, $to])->leftJoin('users', function($join) {
+         $join->on('leads.added_by', '=', 'users.id');});
+
+         // $check = $mylead->where('id','!=',0);
         if (!empty($searchQuery)) {
             $check->where(function ( $q ) use ( $searchQuery ){
-                $q->orWhere('id', 'like', '%'.$searchQuery.'%')
-                  ->orWhere('contact', 'like', '%'.$searchQuery.'%')
-                  ->orWhere('name', 'like', '%'.$searchQuery.'%');
+                $q->orWhere('leads.id', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('leads.contact', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('leads.name', 'like', '%'.$searchQuery.'%');
             });
                 }
         
 
 ## Total number of records with filtering
+        // if($searchByDate != ''){
+        //     $date = explode(' to ', $searchByDate);
+        //     if(isset($date[1])){
+        //         $from = $date[0];
+        //         $to = $date[1];
+        //         $check = $check->whereBetween('created_at', [$from, $to]);
+        //     }else{
+        //         $from = $date[0];
+        //         $check = $check->where('created_at', $from);
+        //     }
+        // }
         if($searchByDate != ''){
-            $date = explode(' to ', $searchByDate);
-            if(isset($date[1])){
-                $from = $date[0];
-                $to = $date[1];
-                $check = $check->whereBetween('created_at', [$from, $to]);
-            }else{
-                $from = $date[0];
-                $check = $check->where('created_at', $from);
-            }
+            $mytask=DB::table('lead_task')->where('id',$searchByDate)->first();
+            $from=$mytask->lead_from;
+            $to=$mytask->lead_to;
+            $check=Lead::whereBetween('leads.id', [$from, $to])->leftJoin('users', function($join) {
+         $join->on('leads.added_by', '=', 'users.id');});
+            
         }
-
 
         $totalRecords = $check->count();
         $totalRecordwithFilter = $check->count();
@@ -71,7 +85,15 @@ class MyLeadsController extends Controller
 ## Fetch records
         $check->skip($row);
         $check->take($rowperpage);
-        $record =  $check->get();
+        $record =  $check->get([
+                    'leads.id',
+                    'leads.name',
+                    'leads.contact',
+                    'leads.email',
+                    'users.name as added_by',
+                    'leads.created_at',
+                    'leads.status'
+                ]);
 
         $data = array();
 
@@ -118,3 +140,4 @@ class MyLeadsController extends Controller
        
     }
 }
+
