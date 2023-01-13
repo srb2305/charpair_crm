@@ -136,7 +136,7 @@
     </header>
 </div>
 <!--  END NAVBAR  -->
-
+ 
 <!--  BEGIN NAVBAR  -->
 <div class="sub-header-container">
     <header class="header navbar navbar-expand-sm">
@@ -191,7 +191,7 @@
                 </li>
                 @if (Auth::user()->role_id === 1)
                 <li class="menu">
-                    <a href="#employee" data-toggle="collapse" aria-expanded="{{ ($path[1] == 'telecaller')  ? 'true' : '' }}" class="dropdown-toggle">
+                    <a href="#employee" data-toggle="collapse" aria-expanded="{{ ($path[3] == 'telecaller') || ($path[3] == 'salesperson') ? 'true' : '' }}" class="dropdown-toggle">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none" class="bi bi-person-lines-fill" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/></svg>
                             <span>Employee</span>
@@ -202,11 +202,11 @@
                             </svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled {{ ($path[1] == 'telecaller') ? 'show' : '' }}" id="employee" data-parent="#accordionExample">
-                       <li class=" {{ ($path[1]) == 'telecaller' ?  'active' : '' }} ">
+                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'telecaller') || ($path[3] == 'salesperson') ? 'show' : '' }}" id="employee" data-parent="#accordionExample">
+                       <li class=" {{ ($path[3]) == 'telecaller' ?  'active' : '' }} ">
                             <a href="{{ route('telecaller') }}">Telecaller</a>
                         </li>
-                        <li class=" {{ ($path[1]) == 'salesperson' ?  'active' : '' }} ">
+                        <li class=" {{ ($path[3]) == 'salesperson' ?  'active' : '' }} ">
                             <a href="{{ route('salesperson') }}"> Sales Person </a>
                         </li>
                     </ul>
@@ -214,7 +214,7 @@
                
             
                  <li class="menu">
-                    <a href="{{ route('leads') }}" aria-expanded="" class="dropdown-toggle">
+                    <a href="{{ route('leads') }}" aria-expanded="{{ ($path[3] == 'leads') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             <span>Leads</span>
@@ -222,7 +222,7 @@
                     </a>
                 </li>
                 <li class="menu">
-                    <a href="{{ route('task_generate') }}" aria-expanded="" class="dropdown-toggle">
+                    <a href="{{ route('task_generate') }}" aria-expanded="{{ ($path[3] == 'task_generate') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-chat-left"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg>
                             <span>Task Generate</span>
@@ -233,7 +233,7 @@
 
                 @if(Auth::user()->role_id === 2)
                 <li class="menu">
-                    <a href="{{ route('myleads') }}" aria-expanded="" class="dropdown-toggle">
+                    <a href="{{ route('myleads') }}" aria-expanded="{{ ($path[3] == 'myleads') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-chat-left"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg>
                             <span>My Leads</span>
@@ -242,7 +242,7 @@
                 </li>
                 @endif
                 <li class="menu">
-                    <a href="{{ route('status_update') }}" aria-expanded="" class="dropdown-toggle">
+                    <a href="{{ route('status_update') }}" aria-expanded="{{ ($path[3] == 'status_update') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-chat-left"><path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z"/><path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z"/><path fill-rule="evenodd" d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z"/></svg>
                             <span>Daily Status</span>

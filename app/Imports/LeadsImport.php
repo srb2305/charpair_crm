@@ -45,5 +45,8 @@ class LeadsImport implements ToModel, WithHeadingRow
                 'status' => 1
         ]);
     }
+    else{
+                return error;
+            }
     }
 }

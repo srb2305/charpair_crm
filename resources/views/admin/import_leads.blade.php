@@ -13,11 +13,17 @@
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    @if(session()->has('message'))
+                    @if(session()->has('error'))
                     <div class="alert alert-danger">
-                        {{ session('message') }}
+                        {{ session('error') }}
                     </div>
                     @endif
+                     @if(session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
                     <form method="post" action="{{ route('uploads_leads') }}"  enctype="multipart/form-data">
                     @csrf
                     <span>* Click For View <a href="/images/Sample_File.xlsx" download>Sample File</a><br></span><br>

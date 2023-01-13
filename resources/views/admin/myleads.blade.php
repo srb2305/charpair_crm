@@ -16,7 +16,7 @@
                                     @foreach($data as $key=>$val)
                                     <option value="{{ $val->id }}">{{ $val->date_from }} to {{ $val->date_to }}</option>
                                     @endforeach
-                                </select>
+                            </select>
                         </div>
                         <!-- <div class="col-lg-4" style="float: left;">
                             <input id="searchByDate" class="form-control flatpickr flatpickr-input active" name="date" type="text" placeholder="Select Date..">
@@ -49,7 +49,7 @@
                             <th>Contact</th>
                             <th>Email</th>
                             <th>Added By</th>
-                            <th>Date</th>
+                            <th>Last call</th>
                             <th>Status</th>
                             <th>Action</th>
                            

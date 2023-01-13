@@ -35,9 +35,15 @@ class LeadController extends Controller
     }
 
     public function import(Request $request) 
-    {  
-        Excel::import(new LeadsImport, $request['file']);
-        return redirect('leads')->with('success', 'All good!');
+    {   
+        if (!empty($request['file'])) {
+            
+            Excel::import(new LeadsImport, $request['file']);
+            return redirect()->back()->with('success', 'File Import Successfully');
+        } else {
+            return redirect()->back()->with('error', 'Something is Wrong');
+        }
+        
     }
 
     public function create(Request $request){
@@ -117,8 +123,10 @@ class LeadController extends Controller
                     'leads.email',
                     'users.name as added_byname',
                     'leads.status',
-                    'leads.created_at'
+                    'leads.last_call'
                 ]);
+        
+
         $data = array();
 
         foreach ($record as $key=>$row ) {
@@ -128,7 +136,17 @@ class LeadController extends Controller
             $contact = $row->contact;
             $email = $row->email;
             $added_by = $row->added_byname;
-            $created_at = $row->created_at;
+            $created_at = $row->last_call;
+            if (!empty($created_at)) {
+                    $created_at = (strtotime($created_at));
+                    $created_date = date('d-M', $created_at);
+                    $created_time = date('g:i A', $created_at);
+                    $created_at= $created_date." ".$created_time ;
+            } else {
+                $created_at='-';
+            }
+            // dd($created_at);
+
             if ($row->status==1) {
                 $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-primary">Active</a>';
                 } else {
@@ -144,7 +162,7 @@ class LeadController extends Controller
                 'contact'=>$contact,
                 'email'=>$email,
                 'added_by'=>$added_by,
-                'created_at'=>Carbon::parse($created_at)->format('d-M-Y'),
+                'created_at'=>$created_at,
                 'status'=>$status,
                 'action'=> "<a style='float: left; color: blue;' href=\"javascript:;\" onclick=\"getData(".$id.");\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"View\">
                         <div class=\"icon-container\">
@@ -283,7 +301,11 @@ class LeadController extends Controller
     	$comment =$request['comment'];
     	$id =$request['id'];
     	$adminid = Auth::id();
-    	// dd($id);
+
+        
+        $date=Carbon::now()->toDateTimeString();
+        
+        Lead::where('id',$id)->update(['last_call'=>$date]); 
 
     	$insert=[
     			'lead_id' => $id,
@@ -291,6 +313,7 @@ class LeadController extends Controller
     			'added_by' => $adminid
     		  ];
     		$data=DB::table('lead_comments')->insert($insert);
+            
         	return true;
     }
 

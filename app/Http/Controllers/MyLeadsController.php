@@ -30,6 +30,8 @@ class MyLeadsController extends Controller
 
 ## Custom Field value
         $searchByDate = $_POST['searchByDate'];
+        
+
         // $searchByLeadid = $_POST['searchByLeadid'];
         
         // $searchByCategory = $_POST['searchByCategory'];
@@ -38,15 +40,18 @@ class MyLeadsController extends Controller
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
         $userid=Auth::id();
-        $mydata=DB::table('lead_task')->where('user_id',$userid)->first();
 
-        $from=$mydata->lead_from;
-        $to=$mydata->lead_to;
+        $mydata=DB::table('lead_task')->where('user_id',$userid)->first();
+        
+        if (!empty($mydata)) {
+
+                $from=$mydata->lead_from;
+                $to=$mydata->lead_to;
 
         // $mylead=Lead::whereBetween('id', [$from, $to]);
         // dd($abc);
-        $check = Lead::whereBetween('leads.id', [$from, $to])->leftJoin('users', function($join) {
-         $join->on('leads.added_by', '=', 'users.id');});
+                $check = Lead::whereBetween('leads.id', [$from, $to])->leftJoin('users', function($join) {
+                $join->on('leads.added_by', '=', 'users.id');});
 
          // $check = $mylead->where('id','!=',0);
         if (!empty($searchQuery)) {
@@ -91,7 +96,7 @@ class MyLeadsController extends Controller
                     'leads.contact',
                     'leads.email',
                     'users.name as added_by',
-                    'leads.created_at',
+                    'leads.last_call',
                     'leads.status'
                 ]);
 
@@ -104,13 +109,21 @@ class MyLeadsController extends Controller
             $contact = $row->contact;
             $email = $row->email;
             $added_by = $row->added_by;
-            $created_at = $row->created_at;
+            $created_at = $row->last_call;
+            if (!empty($created_at)) {
+                    $created_at = (strtotime($created_at));
+                    $created_date = date('d-M', $created_at);
+                    $created_time = date('g:i A', $created_at);
+                    $created_at= $created_date." ".$created_time ;
+            } else {
+                $created_at='-';
+            }
             if ($row->status==1) {
                 $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-primary">Active</a>';
                 } else {
                     $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-danger">Inactive</a>';
                 }
-
+                // Carbon::parse($created_at)->format('d-M-Y')
                  $data[] = array(
                 'id'=>$key+1,
                 'leadid'=>$id,
@@ -118,7 +131,7 @@ class MyLeadsController extends Controller
                 'contact'=>$contact,
                 'email'=>$email,
                 'added_by'=>$added_by,
-                'created_at'=>Carbon::parse($created_at)->format('d-M-Y'),
+                'created_at'=>$created_at,
                 'status'=>$status,
                 'action'=> "<a style='float: left; color: blue;' href=\"javascript:;\" onclick=\"getData(".$id.");\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"View\">
                         <div class=\"icon-container\">
@@ -128,6 +141,7 @@ class MyLeadsController extends Controller
                     </a>",
                     );  
         }
+
 ## Response
         $response = array(
             "draw" => intval($draw),
@@ -137,7 +151,16 @@ class MyLeadsController extends Controller
         );
 
         return json_encode($response);
-       
+       }else{
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => 0,
+            "iTotalDisplayRecords" => 0,
+            "aaData" => []
+        );
+
+        return json_encode($response);
+       }
     }
 }
 

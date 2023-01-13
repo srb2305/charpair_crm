@@ -16,12 +16,12 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Lead Id</th>
+                            <th>Lead'Id</th>
                             <th>Name</th>
                             <th>Contact</th>
                             <th>Email</th>
                             <th>Added By</th>
-                            <th>Date</th>
+                            <th>Last Call</th>
                             <th>Status</th>
                             <th>Action</th>
                            
@@ -53,8 +53,8 @@
                   
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Discard</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button class="btn"  onClick="window.location.href=window.location.href" data-dismiss="modal"><i class="flaticon-cancel-12" ></i>Back</button>
+                    <button type="submit" class="btn btn-primary" >Save</button>
                 </div>
                 
             </div>
@@ -185,6 +185,7 @@
 
                 });
             });
+            
         });
     </script>
 @endpush
