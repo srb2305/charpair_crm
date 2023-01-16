@@ -23,6 +23,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
+Route::post('todayLeadsTableData', 'DashboardController@todayLeadsTableData')->name('todayLeadsTableData');
+
 
 //Profile
 Route::get('profile', 'ProfileController@indexProfile')->name('profile');
@@ -99,3 +101,4 @@ Route::post('/status_add','LeadTaskController@statusAdd')->name('status_add');
 Route::post('statusTableData', 'LeadTaskController@statusTableData')->name('statusTableData');
 Route::get('/dailystatus/{id}', 'LeadTaskController@dailystatus')->name('dailystatus');
 
+ 

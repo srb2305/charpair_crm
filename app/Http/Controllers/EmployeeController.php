@@ -99,6 +99,8 @@ class EmployeeController extends Controller
 
 
          $check = User::where('role_id','=',2);
+
+        if (!empty($check)) {
                    
         if (!empty($searchQuery)) {
             $check->where(function ( $q ) use ( $searchQuery ){
@@ -178,6 +180,16 @@ class EmployeeController extends Controller
         );
 
         return json_encode($response);
+        }else{
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => 0,
+            "iTotalDisplayRecords" => 0,
+            "aaData" => []
+        );
+
+        return json_encode($response);
+       }
        
     }
     public function telecallerDelete(Request $request, $id)
@@ -331,7 +343,8 @@ class EmployeeController extends Controller
 
 
          $check = User::where('role_id','=',3);
-                   
+        if (!empty($check)) {
+              
         if (!empty($searchQuery)) {
             $check->where(function ( $q ) use ( $searchQuery ){
                 $q->orWhere('id', 'like', '%'.$searchQuery.'%')
@@ -409,6 +422,16 @@ class EmployeeController extends Controller
         );
 
         return json_encode($response);
+        }else{
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => 0,
+            "iTotalDisplayRecords" => 0,
+            "aaData" => []
+        );
+
+        return json_encode($response);
+       }
        
     }
 

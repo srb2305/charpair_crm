@@ -17,6 +17,7 @@ class LeadComments extends Migration
             $table->id();
             $table->integer('lead_id')->nullable();
             $table->text('comment')->nullable();
+            $table->date('next_call')->nullable();
             $table->integer('added_by')->nullable();
             $table->timestamps();
         });

@@ -84,24 +84,25 @@
                         <div class="widget widget-chart-three">
                             <div class="widget-heading">
                                 <div class="">
-                                    <h5 class="">Unique Visitors</h5>
-                                </div>
-
-                                <div class="dropdown  custom-dropdown">
-                                    <a class="dropdown-toggle" href="#" role="button" id="uniqueVisitors" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="uniqueVisitors">
-                                        <a class="dropdown-item" href="javascript:void(0);">View</a>
-                                        <a class="dropdown-item" href="javascript:void(0);">Update</a>
-                                        <a class="dropdown-item" href="javascript:void(0);">Download</a>
-                                    </div>
+                                    <h5 class="">Today Calls</h5>
                                 </div>
                             </div>
 
                             <div class="widget-content">
-                                <div id="uniqueVisits"></div>
+                                <div id="uniqueVisits">
+                                    <table id="leadsTable" class="table table-hover non-hover" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Lead'Id</th>
+                                                <th>Name</th>
+                                                <th>Contact</th>
+                                                <th>Added By</th>
+                                                <th>Last Call</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -442,3 +443,55 @@
         </div>
 
 @endsection
+@push('footer-script')
+    <script>
+
+        $(document).ready(function(){
+            var dataTable = $('#leadsTable').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'searching': true, 
+                'ajax': {
+                    'headers': {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                'url':'{{ route('todayLeadsTableData') }}',
+                'data': function(data){
+          
+                        // Read values
+                        var date = $('#searchByDate').val();
+                        var review_category = $('#searchByCategory').val();
+                        var rating = $('#searchByRating').val();
+
+                        // Append to data
+                        data.searchByDate = date;
+                        data.searchByCategory = review_category;
+                        data.searchByRating = rating;
+                    }
+                },
+                'columns': [
+                    { data: 'id' },
+                    { data: 'leadid' },
+                    { data: 'name' },
+                    { data: 'contact' },
+                    { data: 'added_by' },
+                    { data: 'created_at' },
+                    ]
+            });
+
+            $('#searchByDate').change(function(){
+                dataTable.draw();
+            });
+
+            $('#searchByCategory').change(function(){
+                dataTable.draw();
+            });
+
+            $('#searchByRating').change(function(){
+                dataTable.draw();
+            });
+
+        });
+    </script>
+@endpush

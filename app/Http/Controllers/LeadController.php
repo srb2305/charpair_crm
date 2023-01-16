@@ -96,7 +96,8 @@ class LeadController extends Controller
          $check = DB::table('leads')->leftJoin('users', function($join) {
                     $join->on('leads.added_by', '=', 'users.id');});
          // $check = Lead::where('id','!=',0);
-                   
+        if (!empty($check)) {
+
         if (!empty($searchQuery)) {
             $check->where(function ( $q ) use ( $searchQuery ){
                 $q->orWhere('leads.id', 'like', '%'.$searchQuery.'%')
@@ -212,6 +213,16 @@ class LeadController extends Controller
         );
 
         return json_encode($response);
+        }else{
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => 0,
+            "iTotalDisplayRecords" => 0,
+            "aaData" => []
+        );
+
+        return json_encode($response);
+       }
        
     }
 
@@ -265,13 +276,16 @@ class LeadController extends Controller
 
 
            ;
-           $html1 =  '<div class="col-lg-12">
+           $html1 =  '<div class="col-lg-12" style="height : auto;>
           
                 <div class="form-group">
                     <input type="hidden" class="form-control" name="id" required="true" value="'.$leads->id.'" id="user_id"></input>   
                 </div>
-                <div class="form-group">
+                <div class="form-group col-lg-12">
                     <textarea class="form-control" name="comment" required="true" placeholder="Please Add Comment"></textarea>   
+                </div>
+                <div class="form-group col-lg-6 ">
+                    <input type="date" class="form-control" name="next_call">   
                 </div>
 
             
@@ -300,6 +314,7 @@ class LeadController extends Controller
     { 
     	$comment =$request['comment'];
     	$id =$request['id'];
+        $next_call =$request['next_call'];
     	$adminid = Auth::id();
 
         
@@ -310,6 +325,7 @@ class LeadController extends Controller
     	$insert=[
     			'lead_id' => $id,
     			'comment' => $comment,
+                'next_call' =>Carbon::parse($next_call)->format('Y-m-d'),
     			'added_by' => $adminid
     		  ];
     		$data=DB::table('lead_comments')->insert($insert);

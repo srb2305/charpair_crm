@@ -95,7 +95,8 @@ class LeadTaskController extends Controller
         $check= DB::table('status_update')->leftJoin('users', function($join) {
          $join->on('status_update.user_id', '=', 'users.id');});
          // $check = DB::table('status_update')->where('id','!=',0);
-                   
+        if (!empty($check)) {
+
         if (!empty($searchQuery)) {
             $check->where(function ( $q ) use ( $searchQuery ){
                 $q->orWhere('status_update.id', 'like', '%'.$searchQuery.'%')
@@ -173,6 +174,16 @@ class LeadTaskController extends Controller
         );
 
         return json_encode($response);
+       }else{
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => 0,
+            "iTotalDisplayRecords" => 0,
+            "aaData" => []
+        );
+
+        return json_encode($response);
+       }
        
     }
 
