@@ -96,7 +96,13 @@
 
             <li class="nav-item dropdown user-profile-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                   <?php $image=Auth::user()->image ?>
+                   @if(!empty($image))
                     <img src="{{asset('/img/').'/'.Auth::user()->image}}" alt="avatar" value="">
+                    @else
+                    <img src="{{asset('/img/default_image.png')}}" alt="avatar" value="">
+                    
+                    @endif
                 </a>
                 <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
                     <div class="">
