@@ -94,9 +94,9 @@
             mode: "range"
         });
 
- 
-        $(document).ready(function(){
-            var dataTable = $('#myleadsTable').DataTable({
+        var dataTable = '';
+        // $(document).ready(function(){
+             dataTable = $('#myleadsTable').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
@@ -144,9 +144,8 @@
                 dataTable.draw();
             });
 
-        });
-    </script>
-    <script>
+        // });
+  
         function getData(val) {
             var id = val;
             var url = "{{ route('leadDetail') }}";
@@ -160,13 +159,16 @@
                 success: function (data) {
                     $('#exampleModalCenter').modal('show');
                     $('#modalData').html(data);
+                    suggestionRefresh();
                 }
             });
         }
-    </script>
-    <script>
-        $(document).ready(function(){
-
+        function suggestionRefresh(){
+            $('#pre_comment').on('change',function(e){ 
+                $('#comment_textarea').val($(this).val());
+            });
+        }    
+        
             $('#comment').on('submit',function(e){
                 e.preventDefault();
 
@@ -181,8 +183,7 @@
                         console.log(response)
                         var id = $('#user_id').val();
                         getData(id);
-                        // $('#exampleModalCenter').modal('hide')
-                     //   alert("Comment Saved");
+                        dataTable.ajax.reload();
                     },
                     error: function(error){
                         console.log(error)
@@ -191,7 +192,7 @@
 
                 });
             });
-        });
+        // });
     </script>
 @endpush
 

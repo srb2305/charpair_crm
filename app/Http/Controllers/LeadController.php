@@ -229,14 +229,15 @@ class LeadController extends Controller
     public function leadDetail(Request $request){
     	
         $leads = Lead::where('id',$request->id)->first();
+        $precomment=DB::table('predefine_comments')->select('comment')->get();
+         // dd($precomment);
         $lead_comment=DB::table('lead_comments')->where('lead_id',$request->id)->leftJoin('users', 'lead_comments.added_by', '=', 'users.id')->orderBy('lead_comments.id','ASC');
         $leadcomment=$lead_comment->get([
                                     'lead_comments.comment',
                                     'users.name',
                                     'lead_comments.created_at'
                                     ]);
-        
-         // dd($leadcomment);
+
        
         $html = '<div class="row">
             <div class="col-lg-12">
@@ -254,7 +255,7 @@ class LeadController extends Controller
             </div>';
             if(isset($leadcomment)){
             	$html .='<div class="col-lg-12" style="max-height : 250px; overflow-y: auto; overflow-x: hidden;">
-                        <table class="sortable table" style="width: 100%; margin-left:15px; " >
+                        <table class="sortable table" style="width: 100%; margin-left:15px; ">
                             <thead>
                                 <tr>
                                     <th>Comments</th>
@@ -281,16 +282,26 @@ class LeadController extends Controller
                 <div class="form-group">
                     <input type="hidden" class="form-control" name="id" required="true" value="'.$leads->id.'" id="user_id"></input>   
                 </div>
-                <div class="form-group col-lg-12">
-                    <textarea class="form-control" name="comment" required="true" placeholder="Please Add Comment"></textarea>   
-                </div>
                 <div class="form-group col-lg-6 ">
                     <input type="date" class="form-control" name="next_call">   
                 </div>
+                <div class="form-group col-lg-6 ">
+                    <select class="form-control" id="pre_comment">
+                        <option value="">Select Predefine Comment</option>';
+                         foreach ($precomment as $key => $value) {
+                       $html1 .='<option value="'.$value->comment.'">'.$value->comment.'</option>';
+                        }
+                    $html1 .='</select>   
+                </div>
+                <div class="form-group col-lg-12">
+                    <textarea class="form-control" name="comment" required="true" placeholder="Please Add Comment" id="comment_textarea"></textarea>   
+                </div>
+                
 
             
             </div>
             </div>';
+
             $html=$html.'<hr>' .$html1;
 
     return $html ;
@@ -312,7 +323,7 @@ class LeadController extends Controller
 
      public function addcomment(Request $request)
     { 
-    	$comment =$request['comment'];
+        $comment =$request['comment'];
     	$id =$request['id'];
         $next_call =$request['next_call'];
     	$adminid = Auth::id();

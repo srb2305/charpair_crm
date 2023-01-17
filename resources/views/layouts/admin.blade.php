@@ -255,7 +255,26 @@
                         </div>
                     </a>
                 </li>
-              
+                @if (Auth::user()->role_id === 1)
+                <li class="menu">
+                    <a href="#settings" data-toggle="collapse" aria-expanded="{{ ($path[3] == 'comments') ? 'true' : '' }}" class="dropdown-toggle">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none" class="bi bi-person-lines-fill" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/></svg>
+                            <span>Settings</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 19 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'comments') ? 'show' : '' }}" id="settings" data-parent="#accordionExample">
+                       <li class=" {{ ($path[3]) == 'comments' ?  'active' : '' }} ">
+                            <a href="{{ route('comments') }}">Comments</a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
              </ul>
             <!-- <div class="shadow-bottom"></div> -->
 

@@ -53,7 +53,7 @@
                   
                 </div>
                 <div class="modal-footer">
-                    <button class="btn"  onClick="window.location.href=window.location.href" data-dismiss="modal"><i class="flaticon-cancel-12" ></i>Back</button>
+                    <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12" ></i>Back</button>
                     <button type="submit" class="btn btn-primary" >Save</button>
                 </div>
                 
@@ -65,9 +65,9 @@
 @endsection
 @push('footer-script')
     <script>
-
-        $(document).ready(function(){
-            var dataTable = $('#leadsTable').DataTable({
+        var dataTable = '';
+       // $(document).ready(function(){
+             dataTable = $('#leadsTable').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
@@ -115,9 +115,7 @@
                 dataTable.draw();
             });
 
-        });
-    </script>
-    <script>
+       // });
         function getData(val) {
             var id = val;
             var url = "{{ route('leadDetail') }}";
@@ -131,6 +129,7 @@
                 success: function (data) {
                     $('#exampleModalCenter').modal('show');
                     $('#modalData').html(data);
+                    suggestionRefresh();
                 }
             });
         }
@@ -157,10 +156,13 @@
                 }
             });
         }
-    </script>
-    <script>
-        $(document).ready(function(){
-
+     
+        function suggestionRefresh(){
+            $('#pre_comment').on('change',function(e){ 
+                $('#comment_textarea').val($(this).val());
+            });
+        }    
+        
             $('#comment').on('submit',function(e){
                 e.preventDefault();
 
@@ -175,8 +177,7 @@
                         console.log(response)
                         var id = $('#user_id').val();
                         getData(id);
-                        // $('#exampleModalCenter').modal('hide')
-                     //   alert("Comment Saved");
+                        dataTable.ajax.reload();
                     },
                     error: function(error){
                         console.log(error)
@@ -186,7 +187,7 @@
                 });
             });
             
-        });
+       
     </script>
 @endpush
 

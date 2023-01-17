@@ -91,9 +91,20 @@ class LeadTaskController extends Controller
 
 ## Search
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
-
-        $check= DB::table('status_update')->leftJoin('users', function($join) {
+        
+        $user= Auth::User();
+        $role=$user->role_id;
+        if ($role==1) {
+          $check= DB::table('status_update')->leftJoin('users', function($join) {
          $join->on('status_update.user_id', '=', 'users.id');});
+        } else {
+           $userid = Auth::id();
+            $check= DB::table('status_update')->leftJoin('users', function($join) {
+             $join->on('status_update.user_id', '=', 'users.id');})->where('user_id',$userid);
+        }
+        
+       
+
          // $check = DB::table('status_update')->where('id','!=',0);
         if (!empty($check)) {
 
@@ -145,14 +156,7 @@ class LeadTaskController extends Controller
                 'title'=>$title,
                 'description'=>$description,
                 'status'=>$status,
-                'action'=> "<a style='float: left; color: blue;' href=\"javascript:;\" onclick=\"getData(".$id.");\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"View\">
-                        <div class=\"icon-container\">
-                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-eye\"><path d=\"M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z\"></path><circle cx=\"12\" cy=\"12\" r=\"3\"></circle>
-                            </svg>
-                        </div>
-                    </a>
-                   
-                <a style='float: left; color: red;' data-role-id=\"".$id."\" href=\"javascript:;\" onclick=\"deleteThis(".$id.");\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Delete\">
+                'action'=> "<a style='float: left; color: red;' data-role-id=\"".$id."\" href=\"javascript:;\" onclick=\"deleteThis(".$id.");\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Delete\">
                     <div class=\"icon-container\">
                         <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-trash-2\">
                             <polyline points=\"3 6 5 6 21 6\"></polyline>

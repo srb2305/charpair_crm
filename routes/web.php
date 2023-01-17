@@ -101,4 +101,13 @@ Route::post('/status_add','LeadTaskController@statusAdd')->name('status_add');
 Route::post('statusTableData', 'LeadTaskController@statusTableData')->name('statusTableData');
 Route::get('/dailystatus/{id}', 'LeadTaskController@dailystatus')->name('dailystatus');
 
- 
+//settings
+//comments
+Route::get('/comments','SettingController@index')->name('comments');
+Route::post('commentTableData', 'SettingController@commentTableData')->name('commentTableData');
+// Route::get('/predefinecomment','SettingController@predefinecomment')->name('predefinecomment');
+Route::post('add_precomment', 'SettingController@addComment')->name('add_precomment');
+
+Route::get('/comment_edit/{commentid}','SettingController@commentEdit')->name('comment_edit');
+Route::post('update_precomment', 'SettingController@commentUpdate')->name('update_precomment');
+Route::delete('commentDelete/{id}', 'SettingController@commentDelete')->name('commentDelete');
