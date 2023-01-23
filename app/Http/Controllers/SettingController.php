@@ -16,6 +16,12 @@ class SettingController extends Controller
     	return view('admin/comments');
     }
 
+    public function categoryIndex(){
+        
+        $data=DB::table('task_category')->get();
+        return view('admin/category', compact('data'));
+    }
+
     public function predefinecomment(){
         
     	return view('admin/predefine_comment');
@@ -34,7 +40,9 @@ class SettingController extends Controller
 
     	$insert=[
           'comment' => ucwords($comment),
-          'added_by' => $adminid
+          'added_by' => $adminid,
+          'created_at' =>Carbon::now(),
+          'updated_at' =>null
           ];
         DB::table('predefine_comments')->insert($insert);
         return redirect('comments');
@@ -48,7 +56,9 @@ class SettingController extends Controller
 
     	$update=[
           'comment' => ucwords($comment),
-          'added_by' => $adminid
+          'added_by' => $adminid,
+          'updated_at' =>Carbon::now()
+
           ];
         DB::table('predefine_comments')->where('id',$id)->update($update);
         return redirect('comments');
@@ -161,5 +171,26 @@ class SettingController extends Controller
          $message['status'] = 'success';
 
          return $message;
+    }
+
+    public function categoryCreate(Request $request){
+
+        $category=$request['category'];
+        // $adminid = Auth::id();
+
+        $insert=[
+          'title' => ucwords($category),
+          'created_at' => Carbon::now(),
+          'updated_at' => null
+          ];
+        DB::table('task_category')->insert($insert);
+        return redirect('category');
+    }
+
+    public function categoryDestroy($id){
+
+        DB::table('task_category')->where('id',$id)->delete();
+        
+        return redirect('category');
     }
 }

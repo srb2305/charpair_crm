@@ -63,7 +63,8 @@ class ProfileController extends Controller
 
 	
        $update= User::where('id', $id)
-                ->update(['name'=>$name, 'username'=>$username,'email' =>$email, 'mobile' =>$mobile,'gender' =>$gender, 'image' =>$fileNameToStore]);
+                ->update(['name'=>$name, 'username'=>$username,'email' =>$email, 'mobile' =>$mobile,'gender' =>$gender, 'image' =>$fileNameToStore], 'updated_at' => Carbon::now()
+);
 
        return redirect('profile')->with('message','Your Profile has been Updated Successfully');
 

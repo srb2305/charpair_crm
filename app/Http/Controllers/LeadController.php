@@ -76,7 +76,9 @@ class LeadController extends Controller
                 'department' => $department,
                 'designation' => $designation,
                 'others' => $others,
-    			'added_by' => $adminid
+    			'added_by' => $adminid,
+                'created_at' => Carbon::now(),
+                'updated_at' => null
     		  ];
 
     	Lead::insert($insert);
@@ -282,10 +284,18 @@ class LeadController extends Controller
                 <div class="form-group">
                     <input type="hidden" class="form-control" name="id" required="true" value="'.$leads->id.'" id="user_id"></input>   
                 </div>
-                <div class="form-group col-lg-6 ">
+                <div  class="col-lg-2" style="padding: 10px;">
+                     <label><b>Next Date</b></label>
+                </div>
+                   
+                <div class="form-group col-lg-3">
                     <input type="date" class="form-control" name="next_call">   
                 </div>
-                <div class="form-group col-lg-6 ">
+                <div  class="col-lg-2" style="padding: 10px;">
+                     <label><b>Comments</b></label>
+                </div>
+                <div class="form-group col-lg-5 ">
+                    
                     <select class="form-control" id="pre_comment">
                         <option value="">Select Predefine Comment</option>';
                          foreach ($precomment as $key => $value) {
@@ -337,7 +347,9 @@ class LeadController extends Controller
     			'lead_id' => $id,
     			'comment' => $comment,
                 'next_call' =>Carbon::parse($next_call)->format('Y-m-d'),
-    			'added_by' => $adminid
+    			'added_by' => $adminid,
+                'created_at' => Carbon::now(),
+                'updated_at' => null
     		  ];
     		$data=DB::table('lead_comments')->insert($insert);
             

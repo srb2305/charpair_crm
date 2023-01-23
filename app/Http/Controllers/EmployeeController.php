@@ -74,7 +74,9 @@ class EmployeeController extends Controller
     			'designation' => $designation,
     			'department' => $department,
     			'company' => $company,
-    			'dob' => $dob
+    			'dob' => $dob,
+                'created_at' => Carbon::now(),
+                'updated_at' => null
     		  ];
 
     		User::insert($insert);
@@ -275,7 +277,9 @@ class EmployeeController extends Controller
     			'designation' => $designation,
     			'department' => $department,
     			'company' => $company,
-    			'dob' => $dob
+    			'dob' => $dob,
+                'updated_at' => Carbon::now()
+
     		  ];
     		
     		User::where('id',$id)->update($update);

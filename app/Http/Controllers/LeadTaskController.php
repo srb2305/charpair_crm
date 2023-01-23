@@ -43,7 +43,9 @@ class LeadTaskController extends Controller
     			'date_to' => $end_date,
     			'lead_from' => $lead_idfrom,
     			'lead_to' => $lead_idto,
-    			'assign_by' => $adminid
+    			'assign_by' => $adminid,
+          'created_at' => Carbon::now(),
+          'updated_at' => null
     		  ];
     		DB::table('lead_task')->insert($insert);
     		return redirect()->back()->with('message', 'Task Generate Successfully');
@@ -76,7 +78,9 @@ class LeadTaskController extends Controller
           'date' => $date,
           'title' => $title,
           'description' => $description,
-          'status' => $status
+          'status' => $status,
+          'created_at' => Carbon::now(),
+          'updated_at' => null
           ];
         DB::table('status_update')->insert($insert);
         return redirect('status_update')->with('message', 'Status Update Successfully');

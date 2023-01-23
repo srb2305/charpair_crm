@@ -101,6 +101,16 @@ Route::post('/status_add','LeadTaskController@statusAdd')->name('status_add');
 Route::post('statusTableData', 'LeadTaskController@statusTableData')->name('statusTableData');
 Route::get('/dailystatus/{id}', 'LeadTaskController@dailystatus')->name('dailystatus');
 
+//tasks
+Route::get('/tasks','TaskController@Index')->name('tasks');
+Route::get('/add_task','TaskController@addIndex')->name('add_task');
+Route::post('/task_add','TaskController@taskCreate')->name('task_add');
+Route::post('/taskTableData','TaskController@taskTableData')->name('taskTableData');
+
+Route::get('/task_view/{id}','TaskController@viewTask')->name('task_view');
+Route::post('add_taskcomment', 'TaskController@commentAdd')->name('add_taskcomment');
+Route::post('taskAssignTo','TaskController@taskAssignUpdate')->name('taskAssignTo');
+
 //settings
 //comments
 Route::get('/comments','SettingController@index')->name('comments');
@@ -108,6 +118,13 @@ Route::post('commentTableData', 'SettingController@commentTableData')->name('com
 // Route::get('/predefinecomment','SettingController@predefinecomment')->name('predefinecomment');
 Route::post('add_precomment', 'SettingController@addComment')->name('add_precomment');
 
+
 Route::get('/comment_edit/{commentid}','SettingController@commentEdit')->name('comment_edit');
 Route::post('update_precomment', 'SettingController@commentUpdate')->name('update_precomment');
 Route::delete('commentDelete/{id}', 'SettingController@commentDelete')->name('commentDelete');
+
+
+//category
+Route::get('/category','SettingController@categoryIndex')->name('category');
+Route::post('add_category', 'SettingController@categoryCreate')->name('add_category');
+Route::get('/delete_category/{id}','SettingController@categoryDestroy')->name('delete_category');
