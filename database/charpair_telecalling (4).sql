@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2023 at 10:22 AM
+-- Generation Time: Jan 24, 2023 at 09:03 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.26
 
@@ -59,7 +59,7 @@ CREATE TABLE `leads` (
   `status` tinyint(4) NOT NULL DEFAULT 1,
   `last_call` timestamp NULL DEFAULT current_timestamp(),
   `added_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -68,14 +68,14 @@ CREATE TABLE `leads` (
 --
 
 INSERT INTO `leads` (`id`, `name`, `contact`, `email`, `dob`, `address`, `state`, `city`, `pincode`, `company`, `department`, `designation`, `others`, `status`, `last_call`, `added_by`, `created_at`, `updated_at`) VALUES
-(1, 'test5', 855665455, 'test5@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-13 12:56:17', '49', '2023-01-04 07:41:19', '2023-01-13 12:56:17'),
-(2, 'test6', 65221566, 'test16@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-13 10:06:46', '49', '2023-01-04 07:41:19', '2023-01-13 10:06:46'),
-(3, 'test7', 8899999, 'test7@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-13 13:34:40', '49', '2023-01-04 07:41:19', '2023-01-13 13:34:40'),
+(1, 'test5', 855665455, 'test5@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-17 14:39:25', '49', '2023-01-04 07:41:19', '2023-01-17 14:39:25'),
+(2, 'test6', 65221566, 'test16@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-17 14:39:15', '49', '2023-01-04 07:41:19', '2023-01-17 14:39:15'),
+(3, 'test7', 8899999, 'test7@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-17 11:38:07', '49', '2023-01-04 07:41:19', '2023-01-17 11:38:07'),
 (6, 'test6', 65221566, 'test16@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-13 13:21:58', '49', '2023-01-04 07:54:04', '2023-01-13 13:21:58'),
 (10, 'test5', 855665455, 'test5@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2023-01-16 05:51:39', '7', '2023-01-06 02:26:56', '2023-01-16 05:51:39'),
-(11, 'test6', 65221566, 'test16@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '7', '2023-01-06 02:26:56', '2023-01-06 02:26:56'),
-(12, 'test7', 8899999, 'test7@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-16 06:34:01', '7', '2023-01-06 02:26:56', '2023-01-16 06:34:01'),
-(13, 'test5', 855665455, 'test5@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-16 06:28:09', '7', '2023-01-06 03:54:10', '2023-01-16 06:28:09'),
+(11, 'test6', 65221566, 'test16@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '7', '2023-01-06 02:26:56', '2023-01-17 13:53:46'),
+(12, 'test7', 8899999, 'test7@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-17 12:13:28', '7', '2023-01-06 02:26:56', '2023-01-17 12:13:28'),
+(13, 'test5', 855665455, 'test5@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-17 12:14:17', '7', '2023-01-06 03:54:10', '2023-01-17 12:14:17'),
 (14, 'test6', 65221566, 'test16@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-16 08:23:46', '7', '2023-01-06 03:54:10', '2023-01-16 08:23:46'),
 (15, 'test7', 8899999, 'test7@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-01-13 10:08:57', '7', '2023-01-06 03:54:10', '2023-01-13 10:08:57'),
 (16, 'test6', 65221566, 'test16@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '7', '2023-01-06 03:54:10', '2023-01-06 03:54:10'),
@@ -187,7 +187,23 @@ INSERT INTO `lead_comments` (`id`, `lead_id`, `comment`, `next_call`, `added_by`
 (127, 12, 'last call', '2023-01-16', 7, '2023-01-16 06:33:15', NULL),
 (128, 12, 'next call', '2023-01-31', 7, '2023-01-16 06:34:01', NULL),
 (129, 14, 'monday call', '2023-01-16', 49, '2023-01-16 08:23:10', NULL),
-(130, 14, 'tuesday call', '2023-01-17', 49, '2023-01-16 08:23:46', NULL);
+(130, 14, 'tuesday call', '2023-01-17', 49, '2023-01-16 08:23:46', NULL),
+(131, 1, 'Call Me Tommarow', '2023-01-18', 7, '2023-01-17 11:28:38', NULL),
+(132, 1, 'Hello How Are You', '2023-01-17', 7, '2023-01-17 11:30:31', NULL),
+(133, 1, 'Heyy', '2023-01-09', 7, '2023-01-17 11:30:45', NULL),
+(134, 1, 'fafafa', '2023-01-17', 7, '2023-01-17 11:31:45', NULL),
+(135, 1, 'gsgsg', '2023-01-17', 7, '2023-01-17 11:32:05', NULL),
+(136, 1, 'Call Me Tommarow', '2023-01-17', 7, '2023-01-17 11:33:54', NULL),
+(137, 1, 'Call Me Tommarow', '2023-01-17', 7, '2023-01-17 11:35:05', NULL),
+(138, 1, 'Hello How Are You', '2023-01-17', 7, '2023-01-17 11:36:22', NULL),
+(139, 2, 'Hello How Are You', '2023-01-17', 7, '2023-01-17 11:36:38', NULL),
+(140, 3, 'gagaga', '2023-01-17', 7, '2023-01-17 11:37:14', NULL),
+(141, 3, 'aa', '2023-01-17', 7, '2023-01-17 11:37:23', NULL),
+(142, 3, 'dsffasf', '2023-01-17', 7, '2023-01-17 11:38:07', NULL),
+(143, 12, 'Call Me Latter', '2023-01-17', 7, '2023-01-17 12:13:28', NULL),
+(144, 13, 'heyy', '2023-01-17', 49, '2023-01-17 12:14:17', NULL),
+(145, 2, 'Call Me Latter', '2023-01-17', 7, '2023-01-17 14:39:15', NULL),
+(146, 1, 'Call Me Latter', '2023-01-17', 7, '2023-01-17 14:39:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -207,8 +223,8 @@ CREATE TABLE `lead_task` (
   `task_start_date` date DEFAULT NULL,
   `task_end_date` date DEFAULT NULL,
   `assign_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -218,7 +234,8 @@ CREATE TABLE `lead_task` (
 INSERT INTO `lead_task` (`id`, `user_id`, `date_from`, `date_to`, `lead_from`, `lead_to`, `status`, `description`, `task_start_date`, `task_end_date`, `assign_by`, `created_at`, `updated_at`) VALUES
 (1, 49, '2023-01-05', '2023-01-07', 10, 20, 0, NULL, NULL, NULL, '7', NULL, '2023-01-06 12:28:50'),
 (2, 49, '2023-01-05', '2023-01-10', 25, 30, 0, NULL, NULL, NULL, '7', '2023-01-06 11:39:01', '2023-01-12 13:34:13'),
-(5, 49, '2023-01-11', '2023-01-13', 35, 184, 0, NULL, NULL, NULL, '7', '2023-01-12 13:38:52', NULL);
+(5, 49, '2023-01-11', '2023-01-13', 35, 184, 0, NULL, NULL, NULL, '7', '2023-01-12 13:38:52', NULL),
+(6, 49, '2023-01-18', '2023-01-18', 802, 810, 0, NULL, NULL, NULL, '7', '2023-01-17 13:50:04', NULL);
 
 -- --------------------------------------------------------
 
@@ -244,7 +261,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2023_01_04_133454_lead_comments', 3),
 (7, '2023_01_05_061713_roles', 4),
 (8, '2023_01_06_100947_lead_task', 5),
-(9, '2023_01_11_095952_status_update', 6);
+(9, '2023_01_11_095952_status_update', 6),
+(10, '2023_01_17_113438_predefine_comments', 7),
+(11, '2023_01_17_193058_tasks', 8),
+(12, '2023_01_17_195301_task_category', 9),
+(13, '2023_01_17_195326_task_comments', 9);
 
 -- --------------------------------------------------------
 
@@ -264,6 +285,31 @@ CREATE TABLE `password_resets` (
 
 INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 ('admin@admin.com', '$2y$10$sAzPv06RKC4Zy8KeWUGHSea.nOh2wExce9PmMYa9BhA54iyQ7L2oy', '2023-01-05 05:24:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `predefine_comments`
+--
+
+CREATE TABLE `predefine_comments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `comment` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `added_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `predefine_comments`
+--
+
+INSERT INTO `predefine_comments` (`id`, `comment`, `added_by`, `created_at`, `updated_at`) VALUES
+(1, 'Call Me Latter', 7, '2023-01-17 06:52:06', NULL),
+(2, 'Call Me Tommarow', 7, '2023-01-17 07:28:46', '2023-01-17 08:10:46'),
+(3, 'Hello How Are You', 7, '2023-01-17 07:29:18', NULL),
+(5, 'Heyy', 7, '2023-01-17 08:25:21', NULL),
+(6, 'Heyy Call Me Tuesday', 7, '2023-01-17 13:47:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -303,8 +349,8 @@ CREATE TABLE `status_update` (
   `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `comment` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` int(11) DEFAULT NULL COMMENT '0=pending\r\n1=completed',
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -312,13 +358,96 @@ CREATE TABLE `status_update` (
 --
 
 INSERT INTO `status_update` (`id`, `user_id`, `date`, `title`, `description`, `comment`, `status`, `created_at`, `updated_at`) VALUES
-(1, 7, '2023-11-01', 'test', 'for the test', NULL, 0, '2023-01-11 11:11:33', NULL),
+(1, 7, '2023-11-01', 'test', 'for the test', NULL, 1, '2023-01-11 11:11:33', '2023-01-17 13:17:55'),
 (2, 7, '2023-10-01', 'test22', 'fafafa', NULL, 1, '2023-01-11 11:51:17', NULL),
 (3, 7, '2023-11-01', 'ram', 'fgff', NULL, 0, '2023-01-11 11:55:03', '2023-01-11 12:31:15'),
 (4, 49, '2023-05-01', 'hello', 'test description', NULL, 0, '2023-01-11 12:32:22', NULL),
 (5, 7, '2023-01-11', 'testt', 'testtttt', NULL, 1, '2023-01-11 12:37:14', NULL),
 (6, 7, '2023-01-11', 'aaaa', 'hraherherh', NULL, 0, '2023-01-11 13:01:57', NULL),
-(7, 7, '2022-09-06', 'test', 'hgjjhg', NULL, 0, '2023-01-11 13:30:54', NULL);
+(7, 7, '2022-09-06', 'test', 'hgjjhg', NULL, 0, '2023-01-11 13:30:54', NULL),
+(8, 49, '2023-01-17', 'test', 'abcd', NULL, 0, '2023-01-17 13:31:00', NULL),
+(9, 49, '2023-01-16', 'today', 'indore', NULL, 0, '2023-01-17 13:54:49', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tasks`
+--
+
+CREATE TABLE `tasks` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `assign_to` int(11) DEFAULT NULL,
+  `assign_by` int(11) DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '0= Not start\r\n1= In process\r\n2= Completed\r\n3= Hold',
+  `task_start_date` date DEFAULT NULL,
+  `task_end_date` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tasks`
+--
+
+INSERT INTO `tasks` (`id`, `assign_to`, `assign_by`, `title`, `description`, `category_id`, `status`, `task_start_date`, `task_end_date`, `created_at`, `updated_at`) VALUES
+(1, 50, 7, 'task title11', 'task description11', 6, 0, '2023-01-21', '2023-01-22', '2023-01-19 05:58:11', '2023-01-24 06:44:16'),
+(2, 49, 7, 'test23', 'hello', 5, 1, '2023-01-24', '2023-01-25', '2023-01-23 06:25:03', '2023-01-24 07:49:40'),
+(3, 50, 7, 'test23 title', 'test description', 4, 0, '2023-01-23', '2023-01-26', '2023-01-23 11:25:53', '2023-01-24 07:50:01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task_category`
+--
+
+CREATE TABLE `task_category` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `task_category`
+--
+
+INSERT INTO `task_category` (`id`, `title`, `created_at`, `updated_at`) VALUES
+(1, 'Design', '2023-01-23 05:56:23', NULL),
+(3, 'Development', '2023-01-23 06:15:54', NULL),
+(4, 'API', '2023-01-23 06:16:14', NULL),
+(5, 'Android', '2023-01-23 06:16:30', NULL),
+(6, 'IOS', '2023-01-23 06:16:38', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task_comments`
+--
+
+CREATE TABLE `task_comments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `task_id` int(11) DEFAULT NULL,
+  `comment_by` int(11) DEFAULT NULL,
+  `comment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `task_comments`
+--
+
+INSERT INTO `task_comments` (`id`, `task_id`, `comment_by`, `comment`, `file`, `created_at`, `updated_at`) VALUES
+(1, 2, 7, 'This Is First Comment', NULL, '2023-01-23 08:05:49', NULL),
+(2, 2, 7, 'Heyyy', NULL, '2023-01-23 08:26:19', NULL),
+(3, 1, 7, '320302303', NULL, '2023-01-23 10:19:10', NULL),
+(4, 1, 7, '303030', NULL, '2023-01-23 10:19:14', NULL),
+(5, 1, 7, '30230', NULL, '2023-01-23 10:19:25', NULL),
+(6, 2, 49, 'Heyy', NULL, '2023-01-24 05:50:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -355,8 +484,8 @@ CREATE TABLE `users` (
   `is_email_public` int(1) NOT NULL DEFAULT 1,
   `is_dob_public` int(1) NOT NULL DEFAULT 1,
   `is_contact_public` int(1) NOT NULL DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -365,17 +494,17 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `username`, `mobile`, `sos`, `email`, `email_verified_at`, `password`, `remember_token`, `otp`, `gender`, `role_id`, `image`, `govt_id`, `designation`, `department`, `company`, `dob`, `about_me`, `status`, `notification_id`, `api_token`, `google_token`, `fb_token`, `driver_details`, `is_email_public`, `is_dob_public`, `is_contact_public`, `created_at`, `updated_at`) VALUES
 (6, 'Anjaan', 'anjaan', '8962134733', NULL, 'anjaan@gmail.com', NULL, NULL, NULL, '198055', NULL, 6, NULL, NULL, 'developer', NULL, NULL, NULL, 'aGVsbG8gaGk=', 0, 'dXuHP35XSzaf4KfEoUj8-M:APA91bEAXJ8Ces_rM6yrPuC59zllCroPS83wxB0N5cn2DQqPv94OHMQ0Qufuz00UyIFnyrPdsmRlxEGchjlLsOELGJUN7Eh-eDQ2T49-w2BeF9apEXcPdKEH-sw588rr_h5nZ6iINVjv', 'knuhwA9Ocw2KR2DZy6ncYVptxncHgwPCRL3WOXVgseNxdvidq3bmNszbonjP', NULL, NULL, NULL, 0, 0, 0, '2022-10-31 09:24:20', '2022-10-31 10:09:31'),
-(7, 'admin', 'admin', '9898989858', NULL, 'admin@admin.com', NULL, '$2y$10$r3nBl8xcwYNBvUMwGyuU1.U4cui7qzgwCiLxk6uo5E15zUxze/Lai', '1QUd0NEdYTThmlzATXfUYtUfs1nwdGqhAULQShDfOGITbraYPm4vSAdVAJyE', NULL, 'Female', 1, 'default_1672982130.png', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, NULL, '2023-01-16 08:22:21'),
-(10, NULL, NULL, '9755985661', NULL, NULL, NULL, NULL, NULL, '972581', NULL, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'e_uNlAnESHihlQ6L_gESlR:APA91bEGxrQcdrpPlm8XJPrsIh12NSOawJQRcRZzDcesCKh58_oDIF52wbxR_zaypLD3BCAaMyIF0_mOGZjhlxTKcGOknGb9kyBDywJws2SO1nCGy0rC1iYBBxlLWa4yCyxmddn_TD1_', '8fkE425ZBQ4Jm0519FW7cXblzPPA3TTwDC5cECqpD9x5qROoRUKXjqL917c4', NULL, NULL, NULL, 1, 1, 1, '2022-11-07 23:54:40', '2022-11-08 22:30:46'),
-(37, 'test', 'testuser', '9999999', '888888', 'test12@gmail.com', NULL, '$2y$10$PHjV68GS5GVWIQ2nwYkz8u7aS/0OO8yxip2fE6nDgEx9mi9UMKM9G', NULL, NULL, NULL, 2, 'null', NULL, 'telecaller', 'telecaller', 'char pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-02 12:05:39', '2023-01-06 07:39:52'),
+(7, 'admin', 'admin', '9898989858', NULL, 'admin@admin.com', NULL, '$2y$10$r3nBl8xcwYNBvUMwGyuU1.U4cui7qzgwCiLxk6uo5E15zUxze/Lai', 'd8q24cxOTcjxquTbaZxmt0bgqNvdRVZFvMcLNqB14f8ua3ZnounSZqfpDCw8', NULL, 'Female', 1, 'default_1672982130.png', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, NULL, '2023-01-17 13:51:36'),
+(37, 'mohan', 'testuser', '9999999', '888888', 'test12@gmail.com', NULL, '$2y$10$PHjV68GS5GVWIQ2nwYkz8u7aS/0OO8yxip2fE6nDgEx9mi9UMKM9G', NULL, NULL, NULL, 2, 'null', NULL, 'telecaller', 'telecaller', 'char pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-02 12:05:39', '2023-01-17 13:33:57'),
 (40, 'ram', 'adminm', '78237238', '873737373', 'ram@gmail.com', NULL, '$2y$10$eqTUnXR70fd0AU9ACd0YXOpz4o88Mstl8v4jxc1lJqXycT0CpAebC', NULL, NULL, 'male', 3, '1672665252.jpg', NULL, 'salesperson', 'marketing', 'char pair', '2023-01-01', NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-02 13:14:12', '2023-01-05 06:40:31'),
-(42, 'test23', '282', '8237233', '727887', 'test232@gmail.com', NULL, '$2y$10$PHjV68GS5GVWIQ2nwYkz8u7aS/0OO8yxip2fE6nDgEx9mi9UMKM9G', NULL, NULL, 'male', 2, '1672667006.jpg', NULL, 'telecaller', 'telecaller', 'char pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-02 13:43:26', '2023-01-05 01:47:11'),
-(44, 'test03', 'adm32', '336523', '669985', 'test52@gmail.com', NULL, '$2y$10$LoZwZ.01YRlwGvr66REv/.6Vmt2If2GdewRMsqRx.F7CNWf4moRUG', NULL, NULL, 'female', 2, 'null', NULL, 'telecaller', 'telecaller', 'Char Pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-03 09:18:22', '2023-01-05 01:46:57'),
+(42, 'ramesh', '282', '8237233', '727887', 'test232@gmail.com', NULL, '$2y$10$PHjV68GS5GVWIQ2nwYkz8u7aS/0OO8yxip2fE6nDgEx9mi9UMKM9G', NULL, NULL, 'male', 2, '1672667006.jpg', NULL, 'telecaller', 'telecaller', 'char pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-02 13:43:26', '2023-01-17 13:34:04'),
+(44, 'jayesh', 'adm32', '336523', '669985', 'test52@gmail.com', NULL, '$2y$10$LoZwZ.01YRlwGvr66REv/.6Vmt2If2GdewRMsqRx.F7CNWf4moRUG', NULL, NULL, 'female', 2, 'null', NULL, 'telecaller', 'telecaller', 'Char Pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-03 09:18:22', '2023-01-17 13:34:11'),
 (45, 'shyam', 'adm66m', '6468465168', '95664641', 'shyam3@gmail.com', NULL, '$2y$10$beIDxMQ6Sfg9vgNFxqyYXuMZZ/HPtixp/MVpGe2FqrJOC2i5ITbfW', NULL, NULL, NULL, 3, '1672740140.jpg', NULL, 'salesperson', 'salesperson', 'Char Pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-03 10:02:20', '2023-01-05 01:29:00'),
-(46, 'test33', 'admi8ncom', '6338778', NULL, 'test33@gmail.com', NULL, '$2y$10$Q/FskpZrggYhmiM3sbcf6uy9Xg2SOdyudlkdLu8fNuID/5AeO4p2i', NULL, NULL, NULL, 3, NULL, NULL, 'salesperson', 'salesperson', 'Char Pair', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-03 10:03:13', '2023-01-05 06:40:39'),
+(46, 'ramu', 'admi8ncom', '6338778', NULL, 'test33@gmail.com', NULL, '$2y$10$Q/FskpZrggYhmiM3sbcf6uy9Xg2SOdyudlkdLu8fNuID/5AeO4p2i', NULL, NULL, NULL, 3, NULL, NULL, 'salesperson', 'salesperson', 'Char Pair', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-03 10:03:13', '2023-01-17 13:34:21'),
 (48, 'telecall', 'adm22om', '36521456', '369852255', 'tele@gmail.com', NULL, '$2y$10$DYUqrvVGLKTFWAL8blg92OcHLj//Mmf2fI/66Hz7R4bqY9RGIgu92', NULL, NULL, 'male', 2, '1672902428.jpg', NULL, 'telecaller', 'telecaller', 'Char Pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-05 07:07:08', '2023-01-05 07:16:12'),
 (49, 'employee', 'admi556', '6595656568', NULL, 'emp@gmail.com', NULL, '$2y$10$F/IuMJ4mOyAWRi.9XXa0bO2M7Lh5KasvLYAd6uzkmgT8ZKwf2.16m', NULL, NULL, 'Female', 2, NULL, NULL, 'telecaller', 'telecalling', 'Char Pair', '2023-01-24', NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-05 09:52:28', '2023-01-05 08:46:48'),
-(50, 'shyam', NULL, '985478555', NULL, 'shyam123@gmail.com', NULL, '$2y$10$WSyJIAsyEVHqlHeZLtYoPuJoH9MYsOfB1e5uyFpzFdtkITvQTrxXm', NULL, NULL, 'male', 2, NULL, NULL, 'telecaller', 'telecalling', 'Char Pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-13 10:34:54', NULL);
+(50, 'shyam', 'admin@admin.com', '985478555', '233355', 'shyam123@gmail.com', NULL, '$2y$10$ZzmWaFj2qiubC7l2ZKtLlubbxnlbCSEcqKyXSkExcH7nbDiC8Y.yu', NULL, NULL, 'male', 2, NULL, NULL, 'telecaller', 'telecaller', 'Char Pair', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-13 10:34:54', '2023-01-23 09:20:52'),
+(51, 'suresh', '22sd', '9824587', NULL, 'suresh@gmail.com', NULL, '$2y$10$0D8YBSC4.wATUiyyA.ciXePXzEX3wKRxUx3OX3afyKxWTErJc3N/K', NULL, NULL, 'male', 2, NULL, NULL, 'telecaller', 'telecalling', 'Char Pair', '2023-01-26', NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, '2023-01-24 05:53:35', NULL);
 
 --
 -- Indexes for dumped tables
@@ -418,6 +547,12 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
+-- Indexes for table `predefine_comments`
+--
+ALTER TABLE `predefine_comments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
@@ -428,6 +563,24 @@ ALTER TABLE `roles`
 -- Indexes for table `status_update`
 --
 ALTER TABLE `status_update`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `task_category`
+--
+ALTER TABLE `task_category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `task_comments`
+--
+ALTER TABLE `task_comments`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -456,19 +609,25 @@ ALTER TABLE `leads`
 -- AUTO_INCREMENT for table `lead_comments`
 --
 ALTER TABLE `lead_comments`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `lead_task`
 --
 ALTER TABLE `lead_task`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `predefine_comments`
+--
+ALTER TABLE `predefine_comments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -480,13 +639,31 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `status_update`
 --
 ALTER TABLE `status_update`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tasks`
+--
+ALTER TABLE `tasks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `task_category`
+--
+ALTER TABLE `task_category`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `task_comments`
+--
+ALTER TABLE `task_comments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

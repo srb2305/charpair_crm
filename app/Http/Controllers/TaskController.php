@@ -64,21 +64,24 @@ class TaskController extends Controller
 ## Search
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
-        // $userid=Auth::id();
-        // $roleId=User::where('id',$userid)->value('role_id');
+        $userid=Auth::id();
+        $roleId=User::where('id',$userid)->value('role_id');
 
-        // if ($roleId==1) {
-        //     # code...
-        // } else {
-        //     # code...
-        // }
-        
-        // dd($roleId);
-        $check = DB::table('tasks')->leftJoin('users as u1', function($join) {
+        if ($roleId==1) {
+
+                $check = DB::table('tasks')->leftJoin('users as u1', function($join) {
                     $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
                     $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
                     $join->on('tasks.category_id', '=', 'task_category.id');});
         
+        } else {
+                $check = DB::table('tasks')->where('tasks.assign_to', $userid)->leftJoin('users as u1', function($join) {
+                    $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
+                    $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
+                    $join->on('tasks.category_id', '=', 'task_category.id');});
+        }
+        
+        // dd($check);
          // $check = Lead::where('id','!=',0);
         if (!empty($check)) {
 
@@ -121,8 +124,18 @@ class TaskController extends Controller
             $assign_by = $row->assign_by;
             $title = $row->title;
             $category = $row->category;
-            $status = $row->status;
             $created_at = $row->created_at;
+
+            if ($row->status==0) {
+                $status='Not Started';
+            } elseif ($row->status==1) {
+                $status='In Process';
+            } elseif ($row->status==2) {
+                $status='Completed';
+            } else {
+                $status='Hold';
+            }
+            
 
             // if (!empty($created_at)) {
             //         $created_at = (strtotime($created_at));
@@ -178,6 +191,7 @@ class TaskController extends Controller
     }
 
     public function viewTask($id){
+
        $data= DB::table('tasks')->where('tasks.id',$id)->leftJoin('users as u1', function($join) {
                     $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
                     $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
@@ -205,7 +219,7 @@ class TaskController extends Controller
                     ]);
 
         if (!empty($data1)) {
-           return view('admin/view_task', compact('data', 'data1','users'));
+           return view('admin/view_task', compact('data', 'data1','users','id'));
         } else {
             return view('admin/view_task', compact('data'));
         }
@@ -241,6 +255,55 @@ class TaskController extends Controller
         $update=[
             'assign_to' => $assign_to,
             'assign_by' => $adminid,
+            'updated_at' => Carbon::now()
+        ];
+       DB::table('tasks')->where('id', $taskid)->update($update);
+       $message['status'] = 'success';
+       
+       return $message;
+    }
+
+    public function editTask($id){
+
+        $taskDetail=DB::table('tasks')->where('id', $id)->first();
+        $data=User::get();
+        $data1=DB::table('task_category')->get();
+        return view('admin/task_edit', compact('taskDetail','data','data1'));
+    }
+
+    public function taskUpdate(Request $request){
+        
+        $id=$request['id'];
+        $title=$request['title'];
+        $description=$request['description'];
+        $category=$request['category'];
+        $start_date=$request['start_date'];
+        $end_date=$request['end_date'];
+
+        $adminid = Auth::id();
+
+        $update=[
+            'title' => $title,
+            'description' => $description,
+            'category_id' => $category,
+            'task_start_date' => $start_date,
+            'task_end_date' => $end_date,
+            'assign_by' => $adminid,
+            'updated_at' => Carbon::now()
+        ];
+       DB::table('tasks')->where('id', $id)->update($update);
+       
+       return redirect('tasks');
+    }
+
+    public function taskStatusUpdate(Request $request){
+        
+        $message = array();
+        $taskid=$request['id'];
+        $status=$request['status'];
+
+        $update=[
+            'status' => $status,
             'updated_at' => Carbon::now()
         ];
        DB::table('tasks')->where('id', $taskid)->update($update);

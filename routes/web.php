@@ -108,8 +108,12 @@ Route::post('/task_add','TaskController@taskCreate')->name('task_add');
 Route::post('/taskTableData','TaskController@taskTableData')->name('taskTableData');
 
 Route::get('/task_view/{id}','TaskController@viewTask')->name('task_view');
+Route::get('/task_edit/{id}','TaskController@editTask')->name('task_edit');
 Route::post('add_taskcomment', 'TaskController@commentAdd')->name('add_taskcomment');
 Route::post('taskAssignTo','TaskController@taskAssignUpdate')->name('taskAssignTo');
+Route::post('taskStatus','TaskController@taskStatusUpdate')->name('taskStatus');
+
+Route::post('/task_update','TaskController@taskUpdate')->name('task_update');
 
 //settings
 //comments

@@ -5,7 +5,10 @@
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget widget-one">
                 <div class="widget-heading">
-                    <h5 class="" style="margin-bottom: 40px;">Task Detail</h5>
+                    <h5 class="" style="margin-bottom: 40px;">Task Detail 
+                        <a href="{{ route('task_edit',[$id]) }}" class="btn btn-primary" style="float: right; margin-top: -2px;">Edit Task</a>
+                    </h5>
+
                     <hr>
                 </div>
                 <div class="row">
@@ -72,15 +75,38 @@
                                    <p class="p-head">Status: </p> 
                                 </div>
                                 <div class="col-lg-8">
-                                    @if($val->status==0)
-                                    <p class="p-detail">Not Started </p>
+                                    <select class="p-detail" id="status">
+                                        <option>Select Status</option>
+                                        <option  value="0" 
+                                            @if($val->status == 0)
+                                            selected=""
+                                            @endif
+                                        >Not Started</option>
+                                        <option  value="1" 
+                                            @if($val->status == 1)
+                                            selected=""
+                                            @endif
+                                        >In Process</option>
+                                        <option  value="2" 
+                                            @if($val->status == 2)
+                                            selected=""
+                                            @endif
+                                        >Completed</option>
+                                        <option  value="3" 
+                                            @if($val->status == 3)
+                                            selected=""
+                                            @endif
+                                        >Hold</option>
+                                    </select>
+                                    <!-- @if($val->status==0)
+                                    <p class="p-detail" id="status">Not Started </p>
                                     @elseif($val->status==1)
-                                    <p class="p-detail">In Process </p>
+                                    <p class="p-detail" id="status">In Process </p>
                                     @elseif($val->status==3)
-                                    <p class="p-detail">Completed </p>
+                                    <p class="p-detail" id="status">Completed </p>
                                     @else
-                                    <p class="p-detail">Hold </p>
-                                    @endif
+                                    <p class="p-detail" id="status">Hold </p>
+                                    @endif -->
                                 </div>
                                 @endforeach
                             </div>
@@ -168,6 +194,25 @@
                 success: function (response) {
                     if (response.status == "success") {
                        alert('Task Assign Successfully');
+                        location.reload();
+                    }
+                }
+            });
+    } );
+
+    $(document).on('change','#status',function(){
+            var status = $(this).val();
+            // console.log($(this).val());
+            var taksID = "{{$taskid}}";
+            var token = "{{ csrf_token() }}";
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('taskStatus') }}",
+                data: {'_token':token,'status': status, 'id': taksID},
+                success: function (response) {
+                    if (response.status == "success") {
+                       alert('Status Update Successfully');
                         location.reload();
                     }
                 }
