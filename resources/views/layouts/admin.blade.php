@@ -188,7 +188,7 @@
             <div class="shadow-bottom"></div>
             <ul class="list-unstyled menu-categories" id="accordionExample" style="overflow-y: auto;">
                 <li class="menu"> 
-                  <a href="{{ route('dashboard') }}" aria-expanded="" class="dropdown-toggle">
+                  <a href="{{ route('dashboard') }}" aria-expanded="{{ ($path[3] == 'dashboard') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                             <span>Dashboard</span>
@@ -197,10 +197,22 @@
                 </li>
                 @if (Auth::user()->role_id === 1)
                 <li class="menu">
-                    <a href="#employee" data-toggle="collapse" aria-expanded="{{ ($path[3] == 'telecaller') || ($path[3] == 'salesperson') ? 'true' : '' }}" class="dropdown-toggle">
+                    <a href="{{ route('telecaller') }}" aria-expanded="{{ ($path[3] == 'telecaller') ? 'true' : '' }}" class="dropdown-toggle">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none" class="bi bi-person-lines-fill" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/></svg>
                             <span>Employee</span>
+                        </div>
+                        
+                    </a>
+                    
+                </li> 
+               
+            
+                 <li class="menu">
+                    <a href="#leads" data-toggle="collapse" aria-expanded="{{ ($path[3] == 'leads') || ($path[3] == 'task_generate') ? 'true' : '' }}" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <span>Leads</span>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 19 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
@@ -208,33 +220,23 @@
                             </svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'telecaller') || ($path[3] == 'salesperson') ? 'show' : '' }}" id="employee" data-parent="#accordionExample">
-                       <li class=" {{ ($path[3]) == 'telecaller' ?  'active' : '' }} ">
-                            <a href="{{ route('telecaller') }}">Telecaller</a>
+                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'leads') || ($path[3] == 'task_generate') ? 'show' : '' }}" id="leads" data-parent="#accordionExample">
+                       <li class=" {{ ($path[3]) == 'leads' ?  'active' : '' }} ">
+                            <a href="{{ route('leads') }}">Leads</a>
                         </li>
-                        <li class=" {{ ($path[3]) == 'salesperson' ?  'active' : '' }} ">
-                            <a href="{{ route('salesperson') }}"> Sales Person </a>
+                        <li class=" {{ ($path[3]) == 'task_generate' ?  'active' : '' }} ">
+                            <a href="{{ route('task_generate') }}">Leads Generate</a>
                         </li>
                     </ul>
                 </li>
-               
-            
-                 <li class="menu">
-                    <a href="{{ route('leads') }}" aria-expanded="{{ ($path[3] == 'leads') ? 'true' : '' }}" class="dropdown-toggle">
-                        <div class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            <span>Leads</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="menu">
+                <!-- <li class="menu">
                     <a href="{{ route('task_generate') }}" aria-expanded="{{ ($path[3] == 'task_generate') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-chat-left"><path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg>
                             <span>Task Generate</span>
                         </div>
                     </a>
-                </li>
+                </li> -->
                  @endif
 
                 @if(Auth::user()->role_id === 2)
@@ -256,7 +258,7 @@
                     </a>
                 </li>
                 <li class="menu">
-                    <a href="{{ route('tasks') }}" aria-expanded="{{ ($path[3] == 'tasks') ? 'true' : '' }}" class="dropdown-toggle">
+                    <a href="{{ route('tasks') }}" aria-expanded="{{ ($path[3] == 'tasks') || ($path[3] == 'task_view') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-chat-left"><path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
                             <span>Task </span>

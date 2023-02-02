@@ -36,10 +36,6 @@
 						    </div>
 						</div>
 						<div class="form-row">
-							
-						    <div class="form-group col-md-6">
-						      <input type="text" class="form-control" name="title" placeholder="Please Enter Title">
-						    </div>
 						    <div class="form-group col-md-6">
 						      <select class="form-control" name="category">
 						    		<option value="">Please Select Category</option>
@@ -48,6 +44,9 @@
 						    		@endforeach
 						    	</select>
 						    </div>
+						    <div class="form-group col-md-6">
+						      <input type="text" class="form-control" name="title" placeholder="Please Enter Title">
+						    </div> 
 						</div>
 						<div class="form-row">
                         	<div class="form-group col-md-12">

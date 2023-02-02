@@ -120,12 +120,14 @@
     
             <div class="widget widget-one">
                 <div class="widget-heading">
-                    <h5 class="" style="margin-bottom: 40px;">Task Comments</h5>
+                    <h5 class="" style="margin-bottom: 30px;">Task Comments</h5>
+                    <!-- <button class="btn btn-primary mt-3">logs</button> -->
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="w-chart-section">
-                            <div class="row" style="margin-left: 15px;">
+                            @if(!empty($data1))
+                            <div class="row" id="commentDiv" style="margin-left: 15px;">
                                 @foreach($data1 as $k=>$v)
                                 <div class="col-lg-6">
                                    <p class="p-detail">{{ $v->comment }}</p> 
@@ -136,6 +138,7 @@
                                 </div>
                                 @endforeach
                             </div>
+                            @endif
                             <hr>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -159,7 +162,53 @@
                     </div>
                 </div>
             </div>
-      
+
+            <div class="widget widget-one" style="margin-top: 15px;">
+                <div class="widget-heading">
+                    <h5 class="" style="margin-bottom: 30px;">Task Logs</h5>
+                <label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#demo" style="float: right; margin-top: -50px;">
+                         <input type="checkbox">
+                        <span class="slider round"></span>
+                </label>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="w-chart-section">
+                           <table class="collapse table" style="width:100%;" id="demo">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Old Value</th>
+                                        <th>New Value</th>
+                                        <th>Added By</th>
+                                        <th>Date & Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(!empty($data2))
+                                    @foreach($data2 as $key=>$val)
+                                    <tr>
+                                        <th>#</th>
+                                        <th>{{ $val->title }}</th>
+                                        <th>{{ $val->old_value }}</th>
+                                        <th>{{ $val->new_value }}</th>
+                                        <th>{{ $val->name }}</th>
+                                        <?php  $dt = (strtotime($val->created_at));
+                                            $date = date('d-M-y', $dt);
+                                            $time = date('g:i A', $dt);
+                                            $datetime= $date." ".$time ;?>
+                                        <th>{{ $datetime }}</th>
+                                    </tr>
+                                    @endforeach
+                                    @endif
+                                </tbody>
+                            </table> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 </div>
 <style>
     .heading{
@@ -177,10 +226,24 @@
         font-weight: 700;
        /* margin-left: 15px;*/
     }
+    .logbuttton{
+        margin-left: 30px;
+        float: right;
+        margin-top: -22px;
+    }
+    #commentDiv{
+        width: auto;
+        height: 110px;
+        overflow-y: scroll; 
+        overflow-x: hidden;
+    }
+    
 </style>
 @endsection
 @push('footer-script')
 <script type="text/javascript">
+    
+
     $(document).on('change','#assign_to',function(){
             var assign_to = $(this).val();
             // console.log($(this).val());

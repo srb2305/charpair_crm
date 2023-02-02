@@ -72,13 +72,13 @@ class TaskController extends Controller
                 $check = DB::table('tasks')->leftJoin('users as u1', function($join) {
                     $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
                     $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
-                    $join->on('tasks.category_id', '=', 'task_category.id');});
+                    $join->on('tasks.category_id', '=', 'task_category.id');})->orderBy('tasks.id','DESC');
         
         } else {
                 $check = DB::table('tasks')->where('tasks.assign_to', $userid)->leftJoin('users as u1', function($join) {
                     $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
                     $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
-                    $join->on('tasks.category_id', '=', 'task_category.id');});
+                    $join->on('tasks.category_id', '=', 'task_category.id');})->orderBy('tasks.id','DESC')->orderBy('tasks.id','DESC');;
         }
         
         // dd($check);
@@ -209,21 +209,26 @@ class TaskController extends Controller
 
         $users=User::get();
 
-        // dd($users);
-
+        $data2=DB::table('task_logs')->where('task_logs.task_id', $id)->leftJoin('users', function($join) {
+                    $join->on('task_logs.added_by', '=', 'users.id');})->get([
+                        'task_logs.title',
+                        'task_logs.old_value',
+                        'task_logs.new_value',
+                        'users.name',
+                        'task_logs.created_at'
+                    ]);
+        // dd($data2);
         $data1=DB::table('task_comments')->where('task_comments.task_id', $id)->leftJoin('users', function($join) {
-                    $join->on('task_comments.comment_by', '=', 'users.id');})->get([
+                    $join->on('task_comments.comment_by', '=', 'users.id');})->orderBy('task_comments.id','DESC')->get([
                         'task_comments.comment',
                         'users.name',
                         'task_comments.created_at'
                     ]);
+            
 
-        if (!empty($data1)) {
-           return view('admin/view_task', compact('data', 'data1','users','id'));
-        } else {
-            return view('admin/view_task', compact('data'));
-        }
-
+        
+        return view('admin/view_task', compact('data', 'data1','users','id','data2'));
+        
     }
 
     public function commentAdd(Request $request){
@@ -249,8 +254,22 @@ class TaskController extends Controller
         $message = array();
         $taskid=$request['id'];
         $assign_to=$request['assign_to'];
-
+        
         $adminid = Auth::id();
+
+        $olduser=DB::table('tasks')->where('id', $taskid)->value('assign_to');
+        $oldValue= User::where('id',$olduser)->value('name');
+        $newValue= User::where('id',$assign_to)->value('name');
+
+        $insert=[
+            'task_id' => $taskid,
+            'title' => 'Change In Task Assing',
+            'new_value' => $newValue,
+            'old_value' => $oldValue,
+            'added_by' => $adminid,
+            'created_at' => Carbon::now()
+        ];
+        DB::table('task_logs')->insert($insert);
 
         $update=[
             'assign_to' => $assign_to,
@@ -279,9 +298,56 @@ class TaskController extends Controller
         $category=$request['category'];
         $start_date=$request['start_date'];
         $end_date=$request['end_date'];
-
+        
+        
         $adminid = Auth::id();
 
+        $data=DB::table('tasks')->where('id', $id)->first();
+        $oldValueAry=[];
+        $newValueAry=[];
+        if ($data->title != $title) {
+            $oldtitle=$data->title;
+            $newtitle=$title;
+            array_push($oldValueAry, $oldtitle);
+            array_push($newValueAry, $newtitle);
+        }
+        if ($data->description != $description) {
+            $olddescription=$data->description;
+            $newdescription=$description;
+            array_push($oldValueAry, $olddescription);
+            array_push($newValueAry, $newdescription);
+        }
+        // dd($newValueAry);
+        if ($data->category_id != $category) {
+            $oldcategory=$data->category_id.' (Category)';
+            $newcategory=$category.' (Category)';
+            array_push($oldValueAry, $oldcategory);
+            array_push($newValueAry, $newcategory);
+        }
+        if ($data->task_start_date != $start_date) {
+            $oldstart_date=$data->task_start_date;
+            $newstart_date=$start_date;
+            array_push($oldValueAry, $oldstart_date);
+            array_push($newValueAry, $newstart_date);
+        }
+        if ($data->task_end_date != $end_date) {
+            $oldend_date=$data->task_end_date;
+            $newend_date=$end_date;
+            array_push($oldValueAry, $oldend_date);
+            array_push($newValueAry, $newend_date);
+        }
+        if (!empty($newValueAry)) {
+            $insert=[
+            'task_id' => $id,
+            'title' => 'Changes In Task',
+            'new_value' => implode(" , ", $newValueAry),
+            'old_value' => implode(" , ", $oldValueAry),
+            'added_by' => $adminid,
+            'created_at' => Carbon::now()
+            ];
+            DB::table('task_logs')->insert($insert);
+        }
+        
         $update=[
             'title' => $title,
             'description' => $description,
@@ -302,6 +368,39 @@ class TaskController extends Controller
         $taskid=$request['id'];
         $status=$request['status'];
 
+        $adminid = Auth::id();
+
+        $oldstatus=DB::table('tasks')->where('id', $taskid)->value('status');
+        
+        if ($oldstatus==0) {
+                $oldValue='Not Started';
+            } elseif ($oldstatus==1) {
+                $oldValue='In Process';
+            } elseif ($oldstatus==2) {
+                $oldValue='Completed';
+            } else {
+                $oldValue='Hold';
+            }
+        if ($status==0) {
+                $newValue='Not Started';
+            } elseif ($status==1) {
+                $newValue='In Process';
+            } elseif ($status==2) {
+                $newValue='Completed';
+            } else {
+                $newValue='Hold';
+            }
+
+        $insert=[
+            'task_id' => $taskid,
+            'title' => 'Change In Status',
+            'new_value' => $newValue,
+            'old_value' => $oldValue,
+            'added_by' => $adminid,
+            'created_at' => Carbon::now()
+        ];
+        DB::table('task_logs')->insert($insert);
+
         $update=[
             'status' => $status,
             'updated_at' => Carbon::now()
@@ -311,4 +410,5 @@ class TaskController extends Controller
        
        return $message;
     }
+
 }

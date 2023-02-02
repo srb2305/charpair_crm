@@ -14,6 +14,7 @@
                             <th>Name</th>
                             <th>Contact</th>
                             <th>Email</th>
+                            <th>Designation</th>
                             <th>Date</th>
                             <th>Status</th>
                             <th>Action</th>                           
@@ -85,6 +86,7 @@
                     { data: 'name' },
                     { data: 'mobile' },
                     { data: 'email' },
+                    { data: 'designation' },
                     { data: 'created_at' },
                     { data: 'status' },
                     { data: 'action' },
