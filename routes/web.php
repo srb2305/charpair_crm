@@ -107,9 +107,12 @@ Route::get('/add_task','TaskController@addIndex')->name('add_task');
 Route::post('/task_add','TaskController@taskCreate')->name('task_add');
 Route::post('/taskTableData','TaskController@taskTableData')->name('taskTableData');
 
+Route::delete('/task_delete/{id}','TaskController@destroy')->name('task_delete');
+
 Route::get('/task_view/{id}','TaskController@viewTask')->name('task_view');
 Route::get('/task_edit/{id}','TaskController@editTask')->name('task_edit');
 Route::post('add_taskcomment', 'TaskController@commentAdd')->name('add_taskcomment');
+Route::get('comment_delete/{cId}', 'TaskController@commentDestroy')->name('comment_delete');
 Route::post('taskAssignTo','TaskController@taskAssignUpdate')->name('taskAssignTo');
 Route::post('taskStatus','TaskController@taskStatusUpdate')->name('taskStatus');
 

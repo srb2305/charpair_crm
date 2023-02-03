@@ -56,7 +56,7 @@
 						</div>
 						<div class="form-row">
                         	<div class="form-group col-md-12">
-						    	<textarea class="form-control" name="description" placeholder="Please Enter Description">{{ $taskDetail->description }}</textarea>
+						    	<textarea class="form-control" name="description" placeholder="Please Enter Description" id="editor">{{ $taskDetail->description }}</textarea>
 						    </div>
 						</div>
 						<div class="form-row">
@@ -82,3 +82,10 @@
 </div>
 @endsection
 @section('footer-script')
+@push('footer-script')
+    <script>
+       ClassicEditor.create(document.querySelector("#editor"));
+
+       
+    </script>
+@endpush

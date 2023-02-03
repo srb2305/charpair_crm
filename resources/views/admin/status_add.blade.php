@@ -37,7 +37,7 @@
 						</div>
 						<div class="form-row">
                         	<div class="form-group col-md-12">
-						    	<textarea class="form-control" name="description" placeholder="Please Enter Description"></textarea>					    	
+						    	<textarea class="form-control" name="description" placeholder="Please Enter Description" id="editor"></textarea>					    	
 						    </div>
 						</div>
 						<div class="form-row">
@@ -58,6 +58,11 @@
         </div>
     </div>
 </div>
+<style >
+    .ck-editor__editable {
+      min-height: 100px;
+    }
+</style>
 @endsection
 @push('footer-script')
     <script>
@@ -69,7 +74,7 @@
         autoclose: true
     	});
 	});
-       
+     ClassicEditor.create(document.querySelector("#editor"));
     </script>
 @endpush
 

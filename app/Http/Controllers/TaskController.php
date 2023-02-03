@@ -61,6 +61,7 @@ class TaskController extends Controller
          $row = $_POST['start'];
          $rowperpage = $_POST['length']; // Rows display per page
 
+         $searchByStatus = $_POST['searchByStatus'];
 ## Search
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
@@ -92,6 +93,10 @@ class TaskController extends Controller
                   ->orWhere('u1.name', 'like', '%'.$searchQuery.'%');
             });
                 }
+        if($searchByStatus != ''){
+            $check = $check->where('tasks.status', $searchByStatus);
+        }
+
         
 
 ## Total number of records with filtering
@@ -128,12 +133,16 @@ class TaskController extends Controller
 
             if ($row->status==0) {
                 $status='Not Started';
+                $status='<span class="badge badge-secondary" style="background-color: #858289;">'.$status.'</span>';
             } elseif ($row->status==1) {
                 $status='In Process';
+                $status='<span class="badge badge-warning">'.$status.'</span>';
             } elseif ($row->status==2) {
                 $status='Completed';
+                $status='<span class="badge badge-success">'.$status.'</span>';
             } else {
                 $status='Hold';
+                $status='<span class="badge badge-danger">'.$status.'</span>';
             }
             
 
@@ -220,6 +229,7 @@ class TaskController extends Controller
         // dd($data2);
         $data1=DB::table('task_comments')->where('task_comments.task_id', $id)->leftJoin('users', function($join) {
                     $join->on('task_comments.comment_by', '=', 'users.id');})->orderBy('task_comments.id','DESC')->get([
+                        'task_comments.id',
                         'task_comments.comment',
                         'users.name',
                         'task_comments.created_at'
@@ -409,6 +419,30 @@ class TaskController extends Controller
        $message['status'] = 'success';
        
        return $message;
+    }
+
+    public function destroy($id){
+        
+        // dd($id);
+        $message = array();
+        $data['tasks'] = DB::table('tasks')->get();
+        DB::table('tasks')->where('id', $id)->delete();
+
+        $data['task_comments'] = DB::table('task_comments')->get();
+        DB::table('task_comments')->where('task_id', $id)->delete();
+
+        $data['task_logs'] = DB::table('task_logs')->get();
+        DB::table('task_logs')->where('task_id', $id)->delete();
+
+        $message['status'] = 'success';
+
+        return $message;
+
+    }
+    public function commentDestroy($cId){
+            
+       DB::table('task_comments')->where('id',$cId)->delete(); 
+       return redirect()->back();
     }
 
 }

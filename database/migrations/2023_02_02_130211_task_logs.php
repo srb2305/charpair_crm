@@ -17,8 +17,8 @@ class TaskLogs extends Migration
             $table->id();
             $table->integer('task_id')->nullable();
             $table->string('title')->nullable();
-            $table->string('old_value')->nullable();
-            $table->string('new_value')->nullable();
+            $table->text('old_value')->nullable();
+            $table->text('new_value')->nullable();
             $table->integer('added_by')->nullable();
             $table->timestamps();
             
