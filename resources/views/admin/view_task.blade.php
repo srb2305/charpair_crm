@@ -121,7 +121,9 @@
             <div class="widget widget-one">
                 <div class="widget-heading">
                     <h5 class="" style="margin-bottom: 30px;">Task Comments</h5>
-                    <!-- <button class="btn btn-primary mt-3">logs</button> -->
+                   <!-- <span class="spanview">View Comments</span> <label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#commentDiv" style="float: right; margin-top: -50px;">
+                         <input type="checkbox">
+                        <span class="slider round"></span> -->
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -166,7 +168,7 @@
             <div class="widget widget-one" style="margin-top: 15px;">
                 <div class="widget-heading">
                     <h5 class="" style="margin-bottom: 30px;">Task Logs</h5>
-                <label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#demo" style="float: right; margin-top: -50px;">
+                <span class="spanview">View logs</span><label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#demo" style="float: right; margin-top: -50px;">
                          <input type="checkbox">
                         <span class="slider round"></span>
                 </label>
@@ -233,9 +235,14 @@
     }
     #commentDiv{
         width: auto;
-        height: 110px;
-        overflow-y: scroll; 
+        max-height: 140px;
+        overflow-y: auto; 
         overflow-x: hidden;
+    }
+    .spanview{
+        float: right; 
+        margin-top: -52px; 
+        margin-right: 55px;
     }
     
 </style>

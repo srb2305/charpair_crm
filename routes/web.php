@@ -128,7 +128,7 @@ Route::post('update_precomment', 'SettingController@commentUpdate')->name('updat
 Route::delete('commentDelete/{id}', 'SettingController@commentDelete')->name('commentDelete');
 
 
-//category
+//category 
 Route::get('/category','SettingController@categoryIndex')->name('category');
 Route::post('add_category', 'SettingController@categoryCreate')->name('add_category');
 Route::get('/delete_category/{id}','SettingController@categoryDestroy')->name('delete_category');
