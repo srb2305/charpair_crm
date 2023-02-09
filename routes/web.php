@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::group(['middleware' => 'auth'], function () {
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
@@ -135,3 +137,18 @@ Route::delete('commentDelete/{id}', 'SettingController@commentDelete')->name('co
 Route::get('/category','SettingController@categoryIndex')->name('category');
 Route::post('add_category', 'SettingController@categoryCreate')->name('add_category');
 Route::get('/delete_category/{id}','SettingController@categoryDestroy')->name('delete_category');
+//role
+Route::get('/role','SettingController@roleIndex')->name('role');
+Route::post('roleTableData', 'SettingController@roleTableData')->name('roleTableData');
+Route::post('add_role', 'SettingController@addRole')->name('add_role');
+Route::delete('roleDelete/{id}', 'SettingController@roleDelete')->name('roleDelete');
+Route::get('/role_edit/{id}','SettingController@roleEdit')->name('role_edit');
+Route::post('/update_role', 'SettingController@updateRole')->name('update_role');
+
+
+
+
+
+Route::get('/send_mail','DashboardController@sendMail')->name('send_mail');
+
+});

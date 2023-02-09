@@ -52,21 +52,18 @@
 						<div class="form-row">
 						    
 						    <div class="form-group col-md-6">
-						    	<select class="form-control" required="true" name="designation">
-						    		<option value="">Please Select Designation</option>
-						    		<option value="telecaller">Telecaller</option>
-						    		<option value="salesperson">Sales Person</option>
+						    	<select class="form-control" required="true" name="role_id">
+						    		<option value="">Please Select Role</option>
+						    		@foreach($data as $key=>$val)
+						    		<option value="{{$val->id}}">{{$val->name}}</option>
+						    		@endforeach
 						    	</select>
 						    </div>
 						    <!-- <div class="form-group col-md-2">
 						      <input type="text" name="company" class="form-control" placeholder="Please Company Name">
-						    </div> -->
+						    </div> Designation-->
 						    <div class="form-group col-md-6">
-						      	<select class="form-control" required="true" name="department">
-						    		<option value="">Please Select Department</option>
-						    		<option value="telecalling">Telecalling</option>
-						    		<option value="marketing">Marketing</option>
-						    	</select>
+						      	<input type="text" name="designation" class="form-control" placeholder="Please Enter Designation">
 						    </div>
 						</div>
 
@@ -82,9 +79,16 @@
 								  <label class="form-check-label"><b>FeMale</b></label>
 								</div>
 						    </div>
-						    <div class="form-group col-md-4">
+						    <!-- <div class="form-group col-md-4">
+						      <input type="date" class="form-control" name="dob" placeholder="Please Enter DOB">
+						    </div> -->
+						    <div class="form-group col-md-1" style=" padding-top: 10px;">
+						    	<label style="color: black; font-size: 16px;" ><b>DOB:</b></label>
+						    </div>
+						    <div class="form-group col-md-3">
 						      <input type="date" class="form-control" name="dob" placeholder="Please Enter DOB">
 						    </div>
+
 						    <div class="form-group col-md-4">
 						      <input type="file" class="form-control" name="image">
 						    </div>

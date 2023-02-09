@@ -5,7 +5,7 @@
         <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 layout-spacing">
             <div class="widget-content widget-content-area br-6">
                 <div class="col-lg-12">
-                    <a href="{{ route('employee_add') }}" class="btn btn-primary" style="float: right; margin-top: 10px; margin-left: 10px;">Add Telecaller</a>
+                    <a href="{{ route('employee_add') }}" class="btn btn-primary" style="float: right; margin-top: 10px; margin-left: 10px;">Add Employee</a>
                 </div>
                 <table id="telecallerTable" class="table table-hover non-hover" style="width:100%">
                     <thead>

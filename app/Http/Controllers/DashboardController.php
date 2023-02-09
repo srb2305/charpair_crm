@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Auth;
+use Mail;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
@@ -162,5 +163,21 @@ class DashboardController extends Controller
         return json_encode($response);
        }
        
+    }
+
+       public function sendMail(){
+
+            $data=['name'=>"srb", 'data'=>"hello from srbit solution"];
+            // $user['to']='rohit.srbit@gmail.com';
+                Mail::send([], $data, function ($messages) {
+                $messages->to('rohit.srbit@gmail.com');
+                $messages->subject('check')
+                         ->setBody('hellooo');
+        });
+       //  Mail::send([], [], function ($message) { 
+       //  $message->to('rohit.srbit@gmail.com', 'Tutorials Point')
+       // ->subject('subject') 
+       // ->setBody('some body', 'text/html'); 
+       //  });
     }
 }

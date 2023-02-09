@@ -20,13 +20,12 @@ class LeadsImport implements ToModel, WithHeadingRow
     {   
         
         if(!empty($row)){
-            
             if (!empty($row['dob'])) {
                $dob= Carbon::createFromFormat('d/m/Y', $row['dob'])->format('Y-m-d');
             } else {
                 $dob=null;
             }
-            
+
         return new Lead([
                 
                 'name' => $row['name'],

@@ -20,8 +20,9 @@ class EmployeeController extends Controller
     }
 
     public function telecallerAdd(){
-    
-    	return view('admin/employee/addtelecaller');
+      
+      $data=Role::get();
+    	return view('admin/employee/addtelecaller',compact('data'));
     }
      
 
@@ -40,23 +41,19 @@ class EmployeeController extends Controller
     	$email=$request['email'];
     	$sos=$request['sos'];
     	$gender=$request['gender'];
+    	$role_id=$request['role_id'];
     	$designation=$request['designation'];
-    	$department=$request['department'];
     	$dob=$request['dob'];
     	$company='Char Pair';
    		
    		$image = $request->file('image');
    		if (!empty($image)) {
-   			$imagename = time().'.'.$image->getClientOriginalExtension();
-        	$destinationPath = base_path('/images');
+   			  $imagename = time().'user.'.$image->getClientOriginalExtension();
+        	$destinationPath = 'img/';
         	$image->move($destinationPath, $imagename);
    		}else{
    			$imagename = null;
    		}
-        
-
-        $role=Role::where('name',$designation)->first();
-   		$roleid= $role->id;
 
    		$check=User::where('email',$email)->first();
 
@@ -69,14 +66,13 @@ class EmployeeController extends Controller
     			'email' => $email,
     			'password' => $password,
     			'gender' => $gender,
-    			'role_id' => $roleid,
+    			'role_id' => $role_id,
     			'image' => $imagename,
     			'designation' => $designation,
-    			'department' => $department,
     			'company' => $company,
     			'dob' => $dob,
-                'created_at' => Carbon::now(),
-                'updated_at' => null
+          'created_at' => Carbon::now(),
+          'updated_at' => null
     		  ];
 
     		User::insert($insert);
@@ -86,7 +82,7 @@ class EmployeeController extends Controller
 
    			return redirect()->back()->with('error', 'Email has Already Registered');
    		}
-   		// dd($roleid);
+
    }
 
    public function telecallerTableData(Request $request){
@@ -100,7 +96,7 @@ class EmployeeController extends Controller
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
 
-         $check = User::where('role_id','=',2)->orWhere('role_id','=',3)->orderBy('id','DESC');
+         $check = User::where('id','!=',0)->orderBy('id','DESC');
 
         if (!empty($check)) {
                    
@@ -208,8 +204,8 @@ class EmployeeController extends Controller
     public function employeeEdit($id)
     {
         $data = User::where('id',$id)->first();
-        // dd($data->name);
-        return view('admin/employee/employee_edit',compact('data'));
+        $data1=Role::get();
+        return view('admin/employee/employee_edit',compact('data','data1'));
     }
 
      public function updateEmployee(Request $request){
@@ -223,25 +219,21 @@ class EmployeeController extends Controller
     	$sos=$request['sos'];
     	$gender=$request['gender'];
     	$designation=$request['designation'];
-    	$department=$request['department'];
+    	$role_id=$request['role_id'];
     	$dob=$request['dob'];
-    	$company=$request['company'];
 
     	$check1=User::where('id',$id)->first();
 
    		$image = $request->file('image');
         if (!empty($image)) {
-   			$imagename = time().'.'.$image->getClientOriginalExtension();
-        	$destinationPath = base_path('/images');
+   			  $imagename = time().'user.'.$image->getClientOriginalExtension();
+          $destinationPath = 'img/';
         	$image->move($destinationPath, $imagename);
    		}else{
    			$imagename = $check1->image;
    		}
 
-        $role=Role::where('name',$designation)->first();
-   		$roleid= $role->id;
 
-   		
    		$this->validate($request,[
 
    			'email'=>'unique:users,email,' .$id,
@@ -273,23 +265,19 @@ class EmployeeController extends Controller
     			'email' => $email,
     			'password' => $password,
     			'gender' => $gender,
-    			'role_id' => $roleid,
+    			'role_id' => $role_id,
     			'image' => $imagename,
     			'designation' => $designation,
-    			'department' => $department,
-    			'company' => $company,
     			'dob' => $dob,
-                'updated_at' => Carbon::now()
+          'updated_at' => Carbon::now()
 
     		  ];
     		
     		User::where('id',$id)->update($update);
 
-    		if ($roleid == 2) {
+    		
     			return redirect()->route('telecaller');
-    		}else{
-    			return redirect()->route('salesperson');
-    		}
+    		
    }
 
    public function telecallerDetail(Request $request){
@@ -318,15 +306,23 @@ class EmployeeController extends Controller
                 <div class="col-lg-6" style="float: left;"><b>Designation :</b></div>
                 <div class="col-lg-6" style="float: left;">'.ucfirst($data->designation).'</div>
             </div>
-             <div class="col-lg-12">
-                <div class="col-lg-6" style="float: left;"><b>Department :</b></div>
-                <div class="col-lg-6" style="float: left;">'.ucfirst($data->department).'</div>
-            </div>
             <div class="col-lg-12">
                 <div class="col-lg-6" style="float: left;"><b>Date of Birth :</b></div>
                 <div class="col-lg-6" style="float: left;">'.$data->dob.'</div>
             </div>
-             <div class="col-lg-12">
+            <div class="col-lg-12">
+                <div class="col-lg-6" style="float: left;"><b>User Image :</b></div>
+                <div class="col-lg-6" style="float: left;">';
+                if (!empty($data->image)) {
+                    $html .= '<a href='.asset('img/'.$data->image).' target="_blank">
+                <img src='.asset('img/'.$data->image).' style="width: 80px; height:80px;" alt="">
+                </a>';
+                }else{
+                    $html .= 'Image Not Found';
+                }
+              $html .= '</div>
+            </div>
+             <div class="col-lg-12" style="margin-top: 5px;">
                 <div class="col-lg-6" style="float: left;"><b>Joining Date :</b></div>
                 <div class="col-lg-6" style="float: left;">'.$a=Carbon::parse($data->created_at)->format('d-M-Y').'</div>
             </div>';

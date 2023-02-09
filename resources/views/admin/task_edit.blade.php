@@ -80,6 +80,11 @@
         </div>
     </div>
 </div>
+<style >
+	.ck-editor__editable {
+      min-height: 100px;
+    }
+</style>
 @endsection
 @section('footer-script')
 @push('footer-script')

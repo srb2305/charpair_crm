@@ -121,7 +121,7 @@
                             <div class="row" id="commentDiv" style="margin-left: 15px;">
                                 @foreach($data1 as $k=>$v)
                                 <div class="col-lg-6">
-                                   <p class="p-detail">{{ $v->comment }}</p> 
+                                   <p>{!! $v->comment !!}</p> 
                                    <hr>
                                 </div>
                                 <div class="col-lg-4">
@@ -190,8 +190,9 @@
                                 <tbody>
                                     @if(!empty($data2))
                                     @foreach($data2 as $key=>$val)
+                                    
                                     <tr>
-                                        <td>#</td>
+                                        <td>{{$key+1}}</td>
                                         <td>{{ $val->title }}</td>
                                         <td>{!! $val->old_value !!}</td>
                                         <td>{!! $val->new_value !!}</td>

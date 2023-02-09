@@ -96,7 +96,7 @@ class LeadController extends Controller
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
          $check = DB::table('leads')->leftJoin('users', function($join) {
-                    $join->on('leads.added_by', '=', 'users.id');});
+                    $join->on('leads.added_by', '=', 'users.id');})->orderBy('leads.id','DESC');
          // $check = Lead::where('id','!=',0);
         if (!empty($check)) {
 

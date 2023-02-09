@@ -58,40 +58,48 @@
 						</div>
 
 						<div class="form-row">
-						    <div class="form-group col-md-4" style="    padding-left: 40px; padding-top: 8px;">
-						       <label style="color: black; font-size: 16px;" ><b>Gender:&nbsp;&nbsp;</b></label>
-						       	<div class="form-check form-check-inline" style="margin-top: 2px;">
-								<input class="form-check-input" type="radio" name="gender" value="male"  {{ $data->gender == 'male' ? 'checked' : '' }} >
-								<label class="form-check-label"><b>Male</b></label>
-								</div>
-							   <div class="form-check form-check-inline">
-								  <input class="form-check-input" type="radio" name="gender" value="female" {{ $data->gender == 'female' ? 'checked' : '' }} >
-								  <label class="form-check-label"><b>FeMale</b></label>
-								</div>
-						    </div>
-						    <div class="form-group col-md-4">
-						    	<select class="form-control" required="true" name="designation">
-						    		<option>{{ $data->designation }}</option>
-						    		<option value="telecaller">Telecaller</option>
-						    		<option value="salesperson">Sales Person</option>
+						    
+						    <div class="form-group col-md-6">
+						    	<select class="form-control" required="true" name="role_id">
+						    		<option value="">Please Select Role</option>
+						    		@foreach($data1 as $key=>$val)
+						    		<option value="{{$val->id}}"
+						    			@if($val->id==$data->role_id)
+						    			selected=""
+                                            @endif >{{$val->name}}</option>
+						    		@endforeach
 						    	</select>
 						    </div>
-						    <div class="form-group col-md-4">
-						      	<select class="form-control" required="true" name="department">
-						    		<option>{{ $data->designation }}</option>
-						    		<option value="telecalling">Telecalling</option>
-						    		<option value="marketing">Marketing</option>
-						    	</select>
+						    <!-- <div class="form-group col-md-2">
+						      <input type="text" name="company" class="form-control" placeholder="Please Company Name">
+						    </div> Designation-->
+						    <div class="form-group col-md-6">
+						      	<input type="text" name="designation" class="form-control" value="{{ $data->designation }}">
 						    </div>
 						</div>
 
 						<div class="form-row">
-						    <div class="form-group col-md-4">
+						    <div class="form-group col-md-4" style="    padding-left: 40px; padding-top: 8px;">
+						       <label style="color: black; font-size: 16px;" ><b>Gender:&nbsp;&nbsp;</b></label>
+						       	<div class="form-check form-check-inline" style="margin-top: 2px;">
+								<input class="form-check-input" type="radio" name="gender" value="male" {{ $data->gender== 'male' ? 'checked': '' }}>
+								<label class="form-check-label"><b>Male</b></label>
+								</div>
+							   <div class="form-check form-check-inline">
+								  <input class="form-check-input" type="radio" name="gender" value="female" {{ $data->gender== 'female' ? 'checked': '' }}>
+								  <label class="form-check-label"><b>FeMale</b></label>
+								</div>
+						    </div>
+						    <!-- <div class="form-group col-md-4">
 						      <input type="date" class="form-control" name="dob" placeholder="Please Enter DOB">
+						    </div> -->
+						    <div class="form-group col-md-1" style=" padding-top: 10px;">
+						    	<label style="color: black; font-size: 16px;" ><b>DOB:</b></label>
 						    </div>
-						    <div class="form-group col-md-4">
-						      <input type="text" name="company" class="form-control" placeholder="Please Company Name" value="{{ $data->company }}">
+						    <div class="form-group col-md-3">
+						      <input type="date" class="form-control" name="dob" value="<?php echo ($data['dob']); ?>">
 						    </div>
+
 						    <div class="form-group col-md-4">
 						      <input type="file" class="form-control" name="image">
 						    </div>

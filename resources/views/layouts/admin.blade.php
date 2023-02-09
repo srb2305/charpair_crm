@@ -198,7 +198,7 @@
                 </li>
                 @if (Auth::user()->role_id === 1)
                 <li class="menu">
-                    <a href="{{ route('telecaller') }}" aria-expanded="{{ ($path[3] == 'telecaller') ? 'true' : '' }}" class="dropdown-toggle">
+                    <a href="{{ route('telecaller') }}" aria-expanded="{{ ($path[3] == 'telecaller') || ($path[3] == 'employee_add') || ($path[3] == 'employee_edit') ? 'true' : '' }}" class="dropdown-toggle">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none" class="bi bi-person-lines-fill" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/></svg>
                             <span>Employee</span>
@@ -280,12 +280,15 @@
                             </svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'comments') || ($path[3] == 'category') ? 'show' : '' }}" id="settings" data-parent="#accordionExample">
-                       <li class=" {{ ($path[3]) == 'comments' ?  'active' : '' }} ">
+                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'comments') || ($path[3] == 'category') || ($path[3] == 'role') || ($path[3] == 'comment_edit') || ($path[3] == 'role_edit') ? 'show' : '' }}" id="settings" data-parent="#accordionExample">
+                       <li class=" {{ ($path[3] == 'comments') || ($path[3] == 'comment_edit') ?  'active' : '' }} ">
                             <a href="{{ route('comments') }}">Comments</a>
                         </li>
                         <li class=" {{ ($path[3]) == 'category' ?  'active' : '' }} ">
                             <a href="{{ route('category') }}">Category</a>
+                        </li>
+                        <li class=" {{ ($path[3] == 'role') || ($path[3] == 'role_edit') ?  'active' : '' }} ">
+                            <a href="{{ route('role') }}">Role</a>
                         </li>
                     </ul>
                 </li>
