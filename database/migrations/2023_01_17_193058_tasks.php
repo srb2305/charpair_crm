@@ -18,7 +18,7 @@ class Tasks extends Migration
             $table->integer('assign_to')->nullable();
             $table->integer('assign_by')->nullable();
             $table->string('title')->nullable();
-            $table->text('description')->nullable();
+            $table->string('description')->nullable();
             $table->integer('category_id')->nullable();
             $table->integer('status')->default(0);
             $table->date('task_start_date')->nullable();
