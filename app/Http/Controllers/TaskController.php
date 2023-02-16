@@ -157,36 +157,23 @@ class TaskController extends Controller
             } elseif ($row->status==2) {
                 $status='Completed';
                 $status='<span class="badge badge-success">'.$status.'</span>';
+            } elseif ($row->status==4) {
+                $status='Re Open';
+                $status='<span class="badge badge-danger">'.$status.'</span>';
+            } elseif ($row->status==5) {
+                $status='Not Completed';
+                $status='<span class="badge badge-danger">'.$status.'</span>';
             } else {
                 $status='Hold';
-                $status='<span class="badge badge-danger">'.$status.'</span>';
+                $status='<span class="badge badge-warning">'.$status.'</span>';
             }
             
-
-            // if (!empty($created_at)) {
-            //         $created_at = (strtotime($created_at));
-            //         $created_date = date('d-M', $created_at);
-            //         $created_time = date('g:i A', $created_at);
-            //         $created_at= $created_date." ".$created_time ;
-            // } else {
-            //     $created_at='-';
-            // }
-            // // dd($created_at);
-
-            // if ($row->status==1) {
-            //     $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-primary">Active</a>';
-            //     } else {
-            //         $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-danger">Inactive</a>';
-            //     }
-
-            // $checkuser=Auth::user()->role_id; 
-            // if ($checkuser == 1) {
             $data[] = array(
-                'id'=>$key+1,
+                // 'id'=>$key+1,
                 'taskid'=>$id,
                 'assign_to'=>$assign_to,
                 'assign_by'=>$assign_by,
-                'title'=>$title,
+                'title'=>(strlen($title) > 20) ? substr($title,0,20).'...' : $title,
                 'category'=>$category,
                 'status'=>$status,
                 'created_at'=>Carbon::parse($created_at)->format('d-M-Y'),
@@ -439,6 +426,10 @@ class TaskController extends Controller
                 $oldValue='In Process';
             } elseif ($oldstatus==2) {
                 $oldValue='Completed';
+            } elseif ($oldstatus==4) {
+                $oldValue='Re Open';
+            } elseif ($oldstatus==5) {
+                $oldValue='Not Completed';
             } else {
                 $oldValue='Hold';
             }
@@ -448,7 +439,11 @@ class TaskController extends Controller
                 $newValue='In Process';
             } elseif ($status==2) {
                 $newValue='Completed';
-            } else {
+            } elseif ($status==4) {
+                $newValue='Re Open';
+            } elseif ($status==5) {
+                $newValue='Not Completed';
+            }else {
                 $newValue='Hold';
             }
 

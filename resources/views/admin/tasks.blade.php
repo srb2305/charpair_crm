@@ -24,10 +24,11 @@
                 <div class="col-lg-12">
                     <a href="{{ route('add_task') }}" class="btn btn-primary" style="float: right; margin-top: 10px; margin-left: 10px;">Add Tasks</a>
                 </div>
+                <div>
                 <table id="TaskTable" class="table table-hover non-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            
                             <th>Task'Id</th>
                             <th>Assign To</th>
                             <th>Assign By</th>
@@ -44,6 +45,7 @@
                         </tr>
                     </thead>
                 </table>
+            </div>
             </div>
         </div>
     </div>
@@ -80,7 +82,7 @@
                     }
                 },
                 'columns': [
-                    { data: 'id' },
+                  
                     { data: 'taskid' },
                     { data: 'assign_to' },
                     { data: 'assign_by' },

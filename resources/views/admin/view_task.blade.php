@@ -98,6 +98,16 @@
                                             selected=""
                                             @endif
                                         >Hold</option>
+                                        <option  value="4" 
+                                            @if($val->status == 4)
+                                            selected=""
+                                            @endif
+                                        >Re Open</option>
+                                        <option  value="5" 
+                                            @if($val->status == 5)
+                                            selected=""
+                                            @endif
+                                        >Not Completed</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-2">
