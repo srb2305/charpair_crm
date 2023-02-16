@@ -155,14 +155,14 @@ class LeadController extends Controller
                 } else {
                     $status = '<a href="'.route('leadsstatus',[$id]).'" class="btn btn-danger">Inactive</a>';
                 }
-
+            $url=url('tel:');
             $checkuser=Auth::user()->role_id; 
             if ($checkuser == 1) {
             $data[] = array(
                 'id'=>$key+1,
                 'leadid'=>$id,
                 'name'=>$name,
-                'contact'=>$contact,
+                'contact'=>"<a href=".$url.$contact.">$contact</a>",
                 'email'=>$email,
                 'added_by'=>$added_by,
                 'created_at'=>$created_at,

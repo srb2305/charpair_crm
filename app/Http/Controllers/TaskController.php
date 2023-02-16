@@ -32,6 +32,7 @@ class TaskController extends Controller
     	$description=$request['description'];
    		$start_date=$request['start_date'];
    		$end_date=$request['end_date'];
+        $task_priority=$request['task_priority'];
 
         // dd($lead_idto);
    		// $start_date=date('d/m/Y',strtotime($start_date));
@@ -44,6 +45,7 @@ class TaskController extends Controller
     			'title' => $title,
     			'description' => $description,
     			'category_id' => $category,
+                'task_priority' => $task_priority,
     			'task_start_date' => $start_date,
     			'task_end_date' => $end_date,
     			'status'=> 0,
@@ -115,6 +117,7 @@ class TaskController extends Controller
                     'u1.name as assign_by',
                     'tasks.title',
                     'task_category.title as category',
+                    'tasks.task_priority',
                     'tasks.status',
                     'tasks.created_at'
                 ]);
@@ -130,6 +133,20 @@ class TaskController extends Controller
             $title = $row->title;
             $category = $row->category;
             $created_at = $row->created_at;
+
+            if ($row->task_priority==1) {
+                $task_priority="High";
+                $task_priority='<span class="badge badge-danger">'.$task_priority.'</span>';
+            } elseif ($row->task_priority==2) {
+                $task_priority="Medium";
+                $task_priority='<span class="badge badge-warning">'.$task_priority.'</span>';
+            } elseif ($row->task_priority==3) {
+                $task_priority="Low";
+                $task_priority='<span class="badge badge-info">'.$task_priority.'</span>';
+            } else {
+                $task_priority="--";
+            }
+            
 
             if ($row->status==0) {
                 $status='Not Started';
@@ -173,6 +190,7 @@ class TaskController extends Controller
                 'category'=>$category,
                 'status'=>$status,
                 'created_at'=>Carbon::parse($created_at)->format('d-M-Y'),
+                'task_priority'=>$task_priority,
                 'action'=> '<a href="'.route('task_view',[$id]).'"class="btn btn-info">View</a>',
                 ); 
             
@@ -212,6 +230,7 @@ class TaskController extends Controller
                     'tasks.description',
                     'task_category.title as category',
                     'tasks.status',
+                    'tasks.task_priority',
                     'tasks.task_start_date',
                     'tasks.task_end_date'
                 ]);
@@ -308,6 +327,8 @@ class TaskController extends Controller
         $category=$request['category'];
         $start_date=$request['start_date'];
         $end_date=$request['end_date'];
+        $end_date=$request['end_date'];
+        $task_priority=$request['task_priority'];
         
         
         $adminid = Auth::id();
@@ -346,6 +367,35 @@ class TaskController extends Controller
             array_push($oldValueAry, $oldend_date);
             array_push($newValueAry, $newend_date);
         }
+        if ($data->task_priority != $task_priority) {
+            
+            $old_priority=$data->task_priority;
+
+            if($old_priority==1){
+                $old_priority='High';
+            } elseif ($old_priority==2) {
+                $old_priority='Medium';
+            } elseif ($old_priority==3) {
+                $old_priority='Low';
+            } else {
+                $old_priority='--';
+            }
+            
+            $new_priority=$task_priority;
+
+            if($new_priority==1){
+                $new_priority='High';
+            } elseif ($new_priority==2) {
+                $old_priority='Medium';
+            } elseif ($new_priority==3) {
+                $new_priority='Low';
+            } else {
+                $new_priority='--';
+            }
+
+            array_push($oldValueAry, $old_priority);
+            array_push($newValueAry, $new_priority);
+        }
         if (!empty($newValueAry)) {
             $insert=[
             'task_id' => $id,
@@ -364,6 +414,7 @@ class TaskController extends Controller
             'category_id' => $category,
             'task_start_date' => $start_date,
             'task_end_date' => $end_date,
+            'task_priority' => $task_priority,
             'assign_by' => $adminid,
             'updated_at' => Carbon::now()
         ];

@@ -63,14 +63,31 @@
 							<div class="form-group col-md-2" style="padding-top: 12px; padding-left: 25px;">
 								<label style="color: black;"><b>Start Date :</b></label>
 							</div>
-						    <div class="form-group col-md-4">
-						      <input type="date" class="form-control" name="start_date" value="{{ $taskDetail->task_start_date }}">
+						    <div class="form-group col-md-2">
+						      <input type="date" class="form-control" name="start_date" value="{{ $taskDetail->task_start_date }}" style="margin-left: -20px;">
 						    </div>
 						    <div class="form-group col-md-2" style="padding-top: 12px; padding-left: 25px;">
 								<label style="color: black;"><b>End Date :</b></label>
 							</div>
+						    <div class="form-group col-md-2">
+						      <input type="date" class="form-control" name="end_date" value="{{ $taskDetail->task_end_date }}" style="margin-left: -30px;">
+						    </div>
 						    <div class="form-group col-md-4">
-						      <input type="date" class="form-control" name="end_date" value="{{ $taskDetail->task_end_date }}">
+						      <select class="form-control" name="task_priority">
+						    		<option value="">Please Select Task Priority</option>
+						    		<option value="1"
+						    			 @if($taskDetail->task_priority == 1)
+                                            selected=""
+                                            @endif>High</option>
+							      	<option value="2"
+							      		@if($taskDetail->task_priority == 2)
+                                            selected=""
+                                            @endif>Medium</option>
+							      	<option value="3"
+							      		@if($taskDetail->task_priority == 3)
+                                            selected=""
+                                            @endif>Low</option>
+						    	</select>
 						    </div>
 						</div>
                         <input type="submit" name="submit" value="Update" class="btn btn-primary mt-3">

@@ -35,6 +35,7 @@
                             <th>Category</th>
                             <th>Status</th>
                             <th>Task Date</th>
+                            <th>Priority</th>
                             <th>Action</th>
                            
                             <!-- <th>Sending Date</th>
@@ -87,6 +88,7 @@
                     { data: 'category' },
                     { data: 'status' },
                     { data: 'created_at' },
+                    { data: 'task_priority' },
                     { data: 'action' },
                     ]
             });

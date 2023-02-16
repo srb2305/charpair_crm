@@ -100,6 +100,17 @@
                                         >Hold</option>
                                     </select>
                                 </div>
+                                <div class="col-lg-2">
+                                   <p class="p-head">Task Priority: </p> 
+                                </div>
+                                <div class="col-lg-10">
+                                    <p class="p-detail">
+                                        @if($val->task_priority==1) High 
+                                        @elseif($val->task_priority==2) Medium 
+                                        @elseif($val->task_priority==3) Low 
+                                        @else --  
+                                        @endif</p>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -176,7 +187,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="w-chart-section">
-                           <table class="collapse table" style="width:100%;" id="demo">
+                           <table class="table" style="width:100%;" id="demo">
                                 <thead>
                                     <tr>
                                         <th>#</th>

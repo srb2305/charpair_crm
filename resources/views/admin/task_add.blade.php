@@ -57,14 +57,22 @@
 							<div class="form-group col-md-2" style="padding-top: 12px; padding-left: 25px;">
 								<label style="color: black;"><b>Start Date :</b></label>
 							</div>
-						    <div class="form-group col-md-4">
-						      <input type="date" class="form-control" name="start_date">
+						    <div class="form-group col-md-2">
+						      <input type="date" class="form-control" name="start_date" style="margin-left: -20px;">
 						    </div>
 						    <div class="form-group col-md-2" style="padding-top: 12px; padding-left: 25px;">
 								<label style="color: black;"><b>End Date :</b></label>
 							</div>
-						    <div class="form-group col-md-4">
-						      <input type="date" class="form-control" name="end_date">
+						    <div class="form-group col-md-2">
+						      <input type="date" class="form-control" name="end_date" style="margin-left: -30px;">
+						    </div>
+						    <div class="form-group col-md-4" >
+						      <select class="form-control" name="task_priority">
+						      	<option>Please Select Task Priority</option>
+						      	<option value="1">High</option>
+						      	<option value="2">Medium</option>
+						      	<option value="3">Low</option>
+						      </select>
 						    </div>
 						</div>
                         <input type="submit" name="submit" value="Submit" class="btn btn-primary mt-3">
