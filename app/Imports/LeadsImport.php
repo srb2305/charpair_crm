@@ -33,13 +33,13 @@ class LeadsImport implements ToModel, WithHeadingRow
                 'email' => $row['email'],
                 'dob' => $dob,
                 'address' => $row['address'],
-                'state' => $row['state'],
+                // 'state' => $row['state'],
                 'city' => $row['city'],
-                'pincode' => $row['pincode'],
+                // 'pincode' => $row['pincode'],
                 'company' => $row['company'],
-                'department' => $row['department'],
-                'designation' => $row['designation'],
-                'others' => $row['others'],
+                // 'department' => $row['department'],
+                // 'designation' => $row['designation'],
+                // 'others' => $row['others'],
                 'added_by' => Auth::user()->id,
                 'status' => 1
         ]);
