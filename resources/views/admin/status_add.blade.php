@@ -8,7 +8,11 @@
                 <div class="widget-header">
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Add Status</h4>
+                            <h4>Add Status
+                                <span style="float: right;">
+                                    <a href="{{ url()->previous() }}" class="btn btn-primary">Back</a>
+                                </span>
+                            </h4>
                         </div>
                     </div>
                 </div>

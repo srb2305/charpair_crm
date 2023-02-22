@@ -53,6 +53,7 @@ class LeadController extends Controller
     	$email=$request['email'];
         $dob=$request['dob'];
         $address=$request['address'];
+        $gender=$request['gender'];
         $state=$request['state'];
         $city=$request['city'];
         $pincode=$request['pincode'];
@@ -69,6 +70,7 @@ class LeadController extends Controller
     			'email' => $email,
                 'dob' => $dob,
                 'address' => $address,
+                'gender' => $gender,
                 'state' => $state,
                 'city' => $city,
                 'pincode' => $pincode,

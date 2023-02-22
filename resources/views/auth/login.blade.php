@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/forms/switches.css') }}">
     <style type="text/css">
         body{
-                background: url(http://charpair.com/img/Lift_Plzz.png);
+                background: url(http://charpair.com/img/Char-Pair.jpg);
                 background-repeat: no-repeat;
                 background-position: center;
             }

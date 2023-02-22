@@ -8,6 +8,7 @@
                     <h5 class="" style="margin-bottom: 40px;">Task Detail 
                         <a href="{{ route('task_edit',[$id]) }}" class="btn btn-primary" style="float: right; margin-top: -2px;">Edit Task</a>
                         <a href="javascript:void(0)" onclick="destroy({{$id}})" class="btn btn-danger" style="float: right; margin-top: -2px;margin-right: 10px;">Delete</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-info" style="float: right; margin-top: -2px;margin-right: 10px;">Back</a>
                     </h5>
 
                     <hr>

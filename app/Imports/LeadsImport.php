@@ -26,12 +26,14 @@ class LeadsImport implements ToModel, WithHeadingRow
                 $dob=null;
             }
 
+
         return new Lead([
                 
                 'name' => $row['name'],
                 'contact' => $row['contact'],
                 'email' => $row['email'],
                 'dob' => $dob,
+                'gender' => $row['gender'],
                 'address' => $row['address'],
                 // 'state' => $row['state'],
                 'city' => $row['city'],
