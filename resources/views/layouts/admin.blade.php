@@ -97,12 +97,11 @@
 
             <li class="nav-item dropdown user-profile-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                   <?php $image=Auth::user()->image ?>
+                   <?php $image = Auth::user()->image ?>
                    @if(!empty($image))
                     <img src="{{asset('/img/').'/'.Auth::user()->image}}" alt="avatar" value="">
                     @else
                     <img src="{{asset('/img/default_image.png')}}" alt="avatar" value="">
-                    
                     @endif
                 </a>
                 <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
@@ -210,7 +209,7 @@
                
             
                  <li class="menu">
-                    <a href="#leads" data-toggle="collapse" aria-expanded="{{ ($path[3] == 'leads') || ($path[3] == 'task_generate') ? 'true' : '' }}" class="dropdown-toggle">
+                    <a href="#leads" data-toggle="collapse" aria-expanded="{{ ($path[3] == 'leads') || ($path[3] == 'task_generate') || ($path[3] == 'import_leads') || ($path[3] == 'lead_task') || ($path[3] == 'lead_task_view') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             <span>Leads</span>
@@ -221,12 +220,15 @@
                             </svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'leads') || ($path[3] == 'task_generate') ? 'show' : '' }}" id="leads" data-parent="#accordionExample">
+                    <ul class="collapse submenu list-unstyled {{ ($path[3] == 'leads') || ($path[3] == 'task_generate') || ($path[3] == 'lead_task') || ($path[3] == 'lead_task_view') ? 'show' : '' }}" id="leads" data-parent="#accordionExample">
                        <li class=" {{ ($path[3]) == 'leads' ?  'active' : '' }} ">
                             <a href="{{ route('leads') }}">Leads</a>
                         </li>
                         <li class=" {{ ($path[3]) == 'task_generate' ?  'active' : '' }} ">
                             <a href="{{ route('task_generate') }}">Leads Generate</a>
+                        </li>
+                        <li class=" {{ ($path[3] == 'lead_task') || ($path[3] == 'lead_task_view') ?  'active' : '' }} ">
+                            <a href="{{ route('lead_task') }}">Leads Task Status</a>
                         </li>
                     </ul>
                 </li>
@@ -259,7 +261,7 @@
                     </a>
                 </li>
                 <li class="menu">
-                    <a href="{{ route('tasks') }}" aria-expanded="{{ ($path[3] == 'tasks') || ($path[3] == 'task_view') || ($path[3] == 'add_task') ? 'true' : '' }}" class="dropdown-toggle">
+                    <a href="{{ route('tasks') }}" aria-expanded="{{ ($path[3] == 'tasks') || ($path[3] == 'task_view') || ($path[3] == 'add_task') || ($path[3] == 'task_edit') ? 'true' : '' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-chat-left"><path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
                             <span>Task </span>

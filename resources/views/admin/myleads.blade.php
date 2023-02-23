@@ -4,20 +4,51 @@
     <div class="row layout-top-spacing">
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-6">
+                @if(\session()->has('message'))
+                    <div class="alert alert-info">
+                        {{ \session('message') }}
+                    </div>
+                @endif
+                @if(\session()->has('error'))
+                    <div class="alert alert-danger">
+                        {{ \session('error') }}
+                    </div>
+                @endif
                 <div class="row container">
                     <label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#demo">
                         <input type="checkbox">
                         <span class="slider round"></span>
                     </label>Filters
                     <div class="collapse col-lg-12" id="demo">
-                        <div class="col-lg-4" style="float: left;">
-                            <select name="date" class="form-control" id="searchByDate" >
-                                    <option value="">Please Select Date</option>
-                                    @foreach($data as $key=>$val)
-                                    <option value="{{ $val->id }}">{{ $val->date_from }} to {{ $val->date_to }}</option>
-                                    @endforeach
-                            </select>
-                        </div>
+                        <form method="post" enctype="multipart/form-data" action="{{ route('lead_task_status') }}">
+                            @csrf
+                            <div class="col-lg-4" style="float: left;">
+                                <select name="date" class="form-control" id="searchByDate" >
+                                        <option value="">Please Select Date</option>
+                                        @foreach($data as $key=>$val)
+                                        <option value="{{ $val->id }}" id="changeId">{{ $val->date_from }} to {{ $val->date_to }}</option>
+                                        @endforeach
+                                        <input type="hidden" name="id" id="idvalue" value="{{ $val->id }}">
+                                </select>
+                            </div>
+                            <div class="col-lg-4" style="float: left;">
+
+                                <select name="status" class="form-control">
+                                    <option value="">Please select Status</option>
+                                     <!-- <option value="0" 
+                                            @if($val->status == 0)
+                                            selected=""
+                                            @endif>Pending</option> -->
+                                     <option value="0">Pending</option>
+                                     <option value="1">In Process</option>
+                                     <option value="2">Complete</option>
+                                     <option value="3">Hold</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3" style="float: left;">
+                                <input type="submit" name="submit" value="Submit" class="btn btn-primary mt-3" style="margin-top: 0rem!important;">
+                            </div>
+                        </form>
                         <!-- <div class="col-lg-4" style="float: left;">
                             <input id="searchByDate" class="form-control flatpickr flatpickr-input active" name="date" type="text" placeholder="Select Date..">
                         </div> -->
@@ -193,6 +224,11 @@
                 });
             });
         // });
+    </script>
+    <script>
+        $('#searchByDate').change(function () {
+            $('#idvalue').val($(this).val());
+        });
     </script>
 @endpush
 

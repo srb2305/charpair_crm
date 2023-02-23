@@ -21,6 +21,11 @@ class LeadTaskController extends Controller
         return view('admin/task_generate', compact('data'));
     }
 
+    public function leadTaskIndex(){
+        
+        return view('admin/lead_task');
+    }
+
 
     public function generateTask(Request $request){
       
@@ -204,5 +209,159 @@ class LeadTaskController extends Controller
             DB::table('status_update')->where('id',$id)->update(['status' => '0']);
         }
         return redirect()->back();
+    }
+
+    public function leadTaskData(Request $request){
+       ## Read value
+
+         $draw = $_POST['draw']; 
+         $row = $_POST['start'];
+         $rowperpage = $_POST['length']; // Rows display per page
+
+         // $searchByStatus = $_POST['searchByStatus'];
+## Search
+        $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
+
+        // $userid=Auth::id();
+        // $roleId=User::where('id',$userid)->value('role_id');
+        $check = DB::table('lead_task')->leftJoin('users as u1', function($join) {
+                $join->on('lead_task.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
+                $join->on('lead_task.user_id', '=', 'u2.id');})->orderBy('lead_task.id','DESC');
+
+        // dd($check);
+         // $check = Lead::where('id','!=',0);
+        if (!empty($check)) {
+
+        if (!empty($searchQuery)) {
+            $check->where(function ( $q ) use ( $searchQuery ){
+                $q->orWhere('lead_task.id', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('u2.name', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('u1.name', 'like', '%'.$searchQuery.'%');
+            });
+                }
+        // if($searchByStatus != ''){
+        //     $check = $check->where('lead_task.status', $searchByStatus);
+        // }
+
+        
+
+## Total number of records with filtering
+      
+
+
+        $totalRecords = $check->count();
+        $totalRecordwithFilter = $check->count();
+
+## Fetch records
+        $check->skip($row);
+        $check->take($rowperpage);
+        $record =  $check->get([
+                    'lead_task.id',
+                    'u2.name as user_id',
+                    'u1.name as assign_by',
+                    'lead_task.lead_from',
+                    'lead_task.lead_to',
+                    'lead_task.date_from',
+                    'lead_task.date_to',
+                    'lead_task.status',
+                    'lead_task.created_at'
+                ]);
+
+        $data = array();
+
+        foreach ($record as $key=>$row ) {
+    
+            $id = $row->id;
+            $assign_to = $row->user_id;
+            $assign_by = $row->assign_by;
+            $leadfrom = $row->lead_from;
+            $leadto = $row->lead_to;
+            $datefrom = $row->date_from;
+            $dateto = $row->date_to;
+            $assignDate = $row->created_at;
+
+            if ($row->status==0) {
+                $status='Not Started';
+                $status='<span class="badge badge-secondary" style="background-color: #858289;">'.$status.'</span>';
+            } elseif ($row->status==1) {
+                $status='In Process';
+                $status='<span class="badge badge-warning">'.$status.'</span>';
+            } elseif ($row->status==2) {
+                $status='Completed';
+                $status='<span class="badge badge-success">'.$status.'</span>';
+            } else {
+                $status='Hold';
+                $status='<span class="badge badge-danger">'.$status.'</span>';
+            }
+
+            $data[] = array(
+                // 'id'=>$key+1,
+                'taskid'=>$id,
+                'assign_to'=>$assign_to,
+                'lead'=>'From - '.$leadfrom .'<br> To - '. $leadto,
+                'date'=>'From - '.Carbon::parse($datefrom)->format('d-M-Y').'<br> To - '. Carbon::parse($dateto)->format('d-M-Y'),
+                'assign_by'=>$assign_by,
+                'status'=>$status,
+                'created_at'=>Carbon::parse($assignDate)->format('d-M-Y'),
+                'action'=> '<a href="'.route('lead_task_view',[$id]).'"class="btn btn-info">View</a>',
+                ); 
+            
+        }
+## Response
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+
+        return json_encode($response);
+        }else{
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => 0,
+            "iTotalDisplayRecords" => 0,
+            "aaData" => []
+        );
+
+        return json_encode($response);
+       }
+       
+    }
+
+    public function leadTaskStatus(Request $request){
+        $id = $request['id'];
+        $status = $request['status'];
+
+        if ($status!= null) {
+
+            DB::table('lead_task')->where('id',$id)->update([ 'status' => $status,]);
+            return redirect('myleads')->with('message', 'Status Update Successfully' );
+        
+        } else {
+            
+            return redirect('myleads')->with('error', 'Somthing Went Wrong' );
+        }
+    }
+
+    public function taskView($id){
+        
+       $data =DB::table('lead_task')->where('lead_task.id',$id)->leftJoin('users as u1', function($join) {
+                $join->on('lead_task.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
+                $join->on('lead_task.user_id', '=', 'u2.id');})->get([
+                            'lead_task.id',
+                            'u2.name as user_id',
+                            'u1.name as assign_by',
+                            'lead_task.lead_from',
+                            'lead_task.lead_to',
+                            'lead_task.date_from',
+                            'lead_task.date_to',
+                            'lead_task.status',
+                            'lead_task.created_at'
+                        ]);
+                
+        return view('admin/lead_task_view', compact('data','id')); 
+        
+        // {{ route('task_edit',[$id]) }} 
     }
 }

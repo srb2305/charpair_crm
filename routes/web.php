@@ -95,13 +95,18 @@ Route::get('/task_generate','LeadTaskController@taskIndex')->name('task_generate
 
 Route::post('/generate_task','LeadTaskController@generateTask')->name('generate_task');
 
+//lead task status
+Route::get('/lead_task','LeadTaskController@leadTaskIndex')->name('lead_task');
+Route::post('/lead_task_table','LeadTaskController@leadTaskData')->name('lead_task_table');
+Route::post('/lead_task_status','LeadTaskController@leadTaskStatus')->name('lead_task_status');
+Route::get('/lead_task_view/{id}', 'LeadTaskController@taskView')->name('lead_task_view');
+
 //status update
 
 Route::get('/status_update','LeadTaskController@Index')->name('status_update');
 Route::get('/add_status','LeadTaskController@create')->name('add_status');
 Route::post('/status_add','LeadTaskController@statusAdd')->name('status_add');
 Route::post('statusTableData', 'LeadTaskController@statusTableData')->name('statusTableData');
-Route::get('/dailystatus/{id}', 'LeadTaskController@dailystatus')->name('dailystatus');
 
 //tasks
 Route::get('/tasks','TaskController@Index')->name('tasks');
