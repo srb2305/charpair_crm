@@ -123,6 +123,21 @@
                                         @endif</p>
                                 </div>
                                 @endforeach
+                                @if(isset($taskimage))
+                                <div class="col-lg-2">
+                                   <p class="p-head">Task Images: </p> 
+                                </div>
+                                <div class="col-lg-10">
+                                    <ul style="display: inline-flex; list-style-type: none; margin-left: -50px;">
+                                        @foreach($taskimage as $key=>$val)
+                                        <?php $url = url('task_images/'. $val);?>
+                                        <li style="margin-left: 15px;">
+                                            <a href="{{$url}}" target="_blank"><img src="{{$url}}" style="height: 50px; width: 60px;"></a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>

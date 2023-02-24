@@ -27,7 +27,7 @@
                         {{ \session('error') }}
                     </div>
                     @endif
-                    <form method="post" action="{{ route('task_update') }}">
+                    <form method="post" action="{{ route('task_update') }}" enctype="multipart/form-data">
                     @csrf
                     	<input type="hidden" name="id" value="{{ $taskDetail->id }}">
                         <!-- <div class="form-row">
@@ -94,6 +94,20 @@
 						    	</select>
 						    </div>
 						</div>
+						<div class="input-group control-group increment" >
+					        <input type="file" name="filename[]" class="form-control">
+					        <div class="input-group-btn" style="margin-left: 15px;"> 
+					           <button class="btn btn-success" id="addimg" type="button"><i class="glyphicon glyphicon-plus"></i>Add More Images</button>
+					        </div>
+					    </div>
+					    <div class="clone hide">
+					        <div class="control-group input-group" style="margin-top:10px">
+					            <input type="file" name="filename[]" class="form-control">
+					        	<div class="input-group-btn" style="margin-left: 15px;"> 
+					            	<button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+					        	</div>
+					       </div>
+					    </div>
                         <input type="submit" name="submit" value="Update" class="btn btn-primary mt-3">
                     </form>
                 </div>
@@ -112,6 +126,18 @@
     <script>
        ClassicEditor.create(document.querySelector("#editor"));
 
+       $(document).ready(function() {
+	    	$(".clone").hide();
+	      $("#addimg").click(function(){ 
+	          var html = $(".clone").html();
+	          $(".increment").after(html);
+	      });
+
+	      $("body").on("click",".btn-danger",function(){ 
+	          $(this).parents(".control-group").remove();
+	      });
+
+	    });
        
     </script>
 @endpush

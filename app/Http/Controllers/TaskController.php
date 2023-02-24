@@ -39,12 +39,28 @@ class TaskController extends Controller
    		// $end_date=date('d/m/Y',strtotime($end_date));
    		$adminid = Auth::id();
 
-   			$insert=[
+        if($request->hasfile('filename'))
+         {
+
+            foreach($request->file('filename') as $image)
+            {
+                $destinationPath = 'task_images/';
+                $fileName = substr($title, 0, 3).rand(0,999) . '.' . $image->guessClientExtension();
+                $image->move($destinationPath, $fileName);
+                $data[] = $fileName;   
+            }
+         }
+         if (!empty($data)) {
+             $dataimage= implode(',', $data);
+         }
+   			
+            $insert=[
     			'assign_to' => $empid,
     			'assign_by' => $adminid,
     			'title' => $title,
     			'description' => $description,
     			'category_id' => $category,
+                'image' => !empty($dataimage) ? $dataimage : null,
                 'task_priority' => $task_priority,
     			'task_start_date' => $start_date,
     			'task_end_date' => $end_date,
@@ -215,12 +231,20 @@ class TaskController extends Controller
                     'u1.name as assign_by',
                     'tasks.title',
                     'tasks.description',
+                    'tasks.image',
                     'task_category.title as category',
                     'tasks.status',
                     'tasks.task_priority',
                     'tasks.task_start_date',
                     'tasks.task_end_date'
                 ]);
+        foreach ($data as $key => $value) {
+             $image=$value->image;
+        }
+        if (!empty($image)) {
+            $taskimage = explode(',', $image);
+            // dd($taskimage);
+        }
 
         $users=User::get();
 
@@ -241,9 +265,12 @@ class TaskController extends Controller
                         'task_comments.created_at'
                     ]);
             
+        if (isset($taskimage)) {
+            return view('admin/view_task', compact('data', 'data1','users','id','data2','taskimage'));
+        } else {
+            return view('admin/view_task', compact('data', 'data1','users','id','data2'));
+        }
 
-        
-        return view('admin/view_task', compact('data', 'data1','users','id','data2'));
         
     }
 
@@ -320,7 +347,24 @@ class TaskController extends Controller
         
         $adminid = Auth::id();
 
+        if($request->hasfile('filename'))
+         {
+
+            foreach($request->file('filename') as $image)
+            {
+                $destinationPath = 'task_images/';
+                $fileName = substr($title, 0, 3).rand(0,999) . '.' . $image->guessClientExtension();
+                $image->move($destinationPath, $fileName);
+                $data[] = $fileName; 
+            }
+         }
+
+         if (!empty($data)) {
+             $dataimage= implode(',', $data);
+         }
+
         $data=DB::table('tasks')->where('id', $id)->first();
+        $image= $data->image;
         $oldValueAry=[];
         $newValueAry=[];
         if ($data->title != $title) {
@@ -394,6 +438,7 @@ class TaskController extends Controller
             ];
             DB::table('task_logs')->insert($insert);
         }
+
         
         $update=[
             'title' => $title,
@@ -402,6 +447,7 @@ class TaskController extends Controller
             'task_start_date' => $start_date,
             'task_end_date' => $end_date,
             'task_priority' => $task_priority,
+            'image' => !empty($dataimage) ? $dataimage : $image,
             'assign_by' => $adminid,
             'updated_at' => Carbon::now()
         ];
