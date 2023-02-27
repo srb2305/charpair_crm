@@ -26,24 +26,31 @@ class LeadsImport implements ToModel, WithHeadingRow
                 $dob=null;
             }
 
-
+// dd($row['designation']);
         return new Lead([
                 
                 'name' => $row['name'],
                 'contact' => $row['contact'],
                 'email' => $row['email'],
                 'dob' => $dob,
-                'gender' => $row['gender'],
                 'address' => $row['address'],
-                // 'state' => $row['state'],
+                'gender' => $row['gender'],
+                'state' => $row['state'],
                 'city' => $row['city'],
-                // 'pincode' => $row['pincode'],
+                'pincode' => $row['pincode'],
                 'company' => $row['company'],
-                // 'department' => $row['department'],
-                // 'designation' => $row['designation'],
-                // 'others' => $row['others'],
+                'department' => $row['department'],
+                'designation' => $row['designation'],
+                'others' => $row['others'],
                 'added_by' => Auth::user()->id,
                 'status' => 1
+
+                // // 'state' => $row['state'],
+                // // 'pincode' => $row['pincode'],
+                // // 'department' => $row['department'],
+                // // 'designation' => $row['designation'],
+                // // 'others' => $row['others'],
+                
         ]);
     }
     else{

@@ -78,6 +78,7 @@ class LeadController extends Controller
                 'department' => $department,
                 'designation' => $designation,
                 'others' => $others,
+                'last_call' => null,
     			'added_by' => $adminid,
                 'created_at' => Carbon::now(),
                 'updated_at' => null
