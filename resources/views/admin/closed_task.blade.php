@@ -4,7 +4,7 @@
     <div class="row layout-top-spacing">
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-6">
-                <div class="row container">
+               <!--  <div class="row container">
                                 <label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#demo">
                                     <input type="checkbox">
                                     <span class="slider round"></span>
@@ -17,21 +17,17 @@
                                     <option value="1">In Process</option>
                                     <option value="2">Completed</option>
                                     <option value="3">Hold</option>
-                                    <option value="4">Re Open</option>
-                                    <option value="5">Not Completed</option>
-                                    <option value="6">Closed</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                <div class="col-lg-12">
+                    </div> -->
+                <!-- <div class="col-lg-12">
                     <a href="{{ route('add_task') }}" class="btn btn-primary" style="float: right; margin-top: 10px; margin-left: 10px;">Add Tasks</a>
-                </div>
+                </div> -->
                 <div>
                 <table id="TaskTable" class="table table-hover non-hover" style="width:100%">
                     <thead>
                         <tr>
-                            
                             <th>Task'Id</th>
                             <th>Assign To</th>
                             <th>Assign By</th>
@@ -41,10 +37,6 @@
                             <th>Task Date</th>
                             <th>Priority</th>
                             <th>Action</th>
-                           
-                            <!-- <th>Sending Date</th>
-                            <th>Sending Date</th> -->
-                            
                         </tr>
                     </thead>
                 </table>
@@ -68,20 +60,20 @@
                     'headers': {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                'url':'{{ route('taskTableData') }}',
+                'url':'{{ route('closeTaskData') }}',
                 'data': function(data){
           
                         // Read values
                         var date = $('#searchByDate').val();
                         var review_category = $('#searchByCategory').val();
                         var rating = $('#searchByRating').val();
-                        var status = $('#searchByStatus').val();
+                        // var status = $('#searchByStatus').val();
 
                         // Append to data
                         data.searchByDate = date;
                         data.searchByCategory = review_category;
                         data.searchByRating = rating;
-                        data.searchByStatus = status;
+                        // data.searchByStatus = status;
                     }
                 },
                 'columns': [
@@ -109,56 +101,11 @@
             $('#searchByRating').change(function(){
                 dataTable.draw();
             });
-            $('#searchByStatus').change(function(){
-                dataTable.draw();
-            });
+            // $('#searchByStatus').change(function(){
+            //     dataTable.draw();
+            // });
 
-       // });
-        function getData(val) {
-            var id = val;
-            var url = "{{ route('leadDetail') }}";
-            url = url.replace(':id', id);
-            var token = "{{ csrf_token() }}";
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {'_token': token, 'id': id},
-                success: function (data) {
-                    $('#exampleModalCenter').modal('show');
-                    $('#modalData').html(data);
-                    suggestionRefresh();
-                }
-            });
-        }
-
-
-        function deleteThis(val) {
-
-            var id = val;
-            var url = "{{ route('leadDelete',':id') }}";
-            url = url.replace(':id', id);
-
-            var token = "{{ csrf_token() }}";
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {'_token': token, '_method': 'DELETE'},
-                success: function (response) {
-                    if (response.status == "success") {
-                       alert('Deleted Successfully');
-                        location.reload();
-                     //   $('#vehicleTable').ajax.reload();
-                    }
-                }
-            });
-        }
-    
-
-       
+       // });     
     </script>
     
 @endpush
-
- 

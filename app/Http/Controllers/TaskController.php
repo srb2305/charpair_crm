@@ -17,6 +17,17 @@ class TaskController extends Controller
     
     	return view('admin/tasks');
     }
+    
+    public function closedTaskIndex(){
+    
+        $date=Carbon::today()->subDays(30)->format('Y-m-d');
+        $closeddata=DB::table('tasks')
+            ->where('status','=',6)
+            ->where('updated_at','<=',$date)
+            ->delete();
+        // dd($closeddata);
+        return view('admin/closed_task');
+    }
 
     public function addIndex()
     {
@@ -88,13 +99,13 @@ class TaskController extends Controller
 
         if ($roleId==1) {
 
-                $check = DB::table('tasks')->leftJoin('users as u1', function($join) {
+                $check = DB::table('tasks')->where('tasks.status','!=',6)->leftJoin('users as u1', function($join) {
                     $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
                     $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
                     $join->on('tasks.category_id', '=', 'task_category.id');})->orderBy('tasks.id','DESC');
         
         } else {
-                $check = DB::table('tasks')->where('tasks.assign_to', $userid)->leftJoin('users as u1', function($join) {
+                $check = DB::table('tasks')->where('tasks.status','!=',6)->where('tasks.assign_to', $userid)->leftJoin('users as u1', function($join) {
                     $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
                     $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
                     $join->on('tasks.category_id', '=', 'task_category.id');})->orderBy('tasks.id','DESC')->orderBy('tasks.id','DESC');;
@@ -179,6 +190,9 @@ class TaskController extends Controller
             } elseif ($row->status==5) {
                 $status='Not Completed';
                 $status='<span class="badge badge-danger">'.$status.'</span>';
+            } elseif ($row->status==6) {
+                $status='Closed';
+                $status='<span class="badge badge-info" style="background-color: #403e40;">'.$status.'</span>';
             } else {
                 $status='Hold';
                 $status='<span class="badge badge-warning">'.$status.'</span>';
@@ -476,6 +490,8 @@ class TaskController extends Controller
                 $oldValue='Re Open';
             } elseif ($oldstatus==5) {
                 $oldValue='Not Completed';
+            } elseif ($oldstatus==6) {
+                $oldValue='Closed';
             } else {
                 $oldValue='Hold';
             }
@@ -489,7 +505,9 @@ class TaskController extends Controller
                 $newValue='Re Open';
             } elseif ($status==5) {
                 $newValue='Not Completed';
-            }else {
+            } elseif ($status==6) {
+                $newValue='Closed';
+            } else {
                 $newValue='Hold';
             }
 
@@ -535,6 +553,134 @@ class TaskController extends Controller
             
        DB::table('task_comments')->where('id',$cId)->delete(); 
        return redirect()->back();
+    }
+
+    public function closeTaskTableData(Request $request){
+       ## Read value
+
+         $draw = $_POST['draw']; 
+         $row = $_POST['start'];
+         $rowperpage = $_POST['length']; // Rows display per page
+
+         // $searchByStatus = $_POST['searchByStatus'];
+## Search
+        $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
+
+        $userid=Auth::id();
+        $roleId=User::where('id',$userid)->value('role_id');
+
+        if ($roleId==1) {
+
+                $check = DB::table('tasks')->where('tasks.status','=',6)->leftJoin('users as u1', function($join) {
+                    $join->on('tasks.assign_by', '=', 'u1.id');})->leftJoin('users as u2', function($join) {
+                    $join->on('tasks.assign_to', '=', 'u2.id');})->leftJoin('task_category', function($join) {
+                    $join->on('tasks.category_id', '=', 'task_category.id');})->orderBy('tasks.id','DESC');
+        
+        } 
+
+        // dd($check);
+         // $check = Lead::where('id','!=',0);
+        if (!empty($check)) {
+
+        if (!empty($searchQuery)) {
+            $check->where(function ( $q ) use ( $searchQuery ){
+                $q->orWhere('tasks.id', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('u2.name', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('u1.name', 'like', '%'.$searchQuery.'%');
+            });
+                }
+        // if($searchByStatus != ''){
+        //     $check = $check->where('tasks.status', $searchByStatus);
+        // }
+
+        
+
+## Total number of records with filtering
+      
+
+
+        $totalRecords = $check->count();
+        $totalRecordwithFilter = $check->count();
+
+## Fetch records
+        $check->skip($row);
+        $check->take($rowperpage);
+        $record =  $check->get([
+                    'tasks.id',
+                    'u2.name as assign_to',
+                    'u1.name as assign_by',
+                    'tasks.title',
+                    'task_category.title as category',
+                    'tasks.task_priority',
+                    'tasks.status',
+                    'tasks.created_at'
+                ]);
+        
+
+        $data = array();
+
+        foreach ($record as $key=>$row ) {
+    
+            $id = $row->id;
+            $assign_to = $row->assign_to;
+            $assign_by = $row->assign_by;
+            $title = $row->title;
+            $category = $row->category;
+            $created_at = $row->created_at;
+
+            if ($row->task_priority==1) {
+                $task_priority="High";
+                $task_priority='<span class="badge badge-danger">'.$task_priority.'</span>';
+            } elseif ($row->task_priority==2) {
+                $task_priority="Medium";
+                $task_priority='<span class="badge badge-warning">'.$task_priority.'</span>';
+            } elseif ($row->task_priority==3) {
+                $task_priority="Low";
+                $task_priority='<span class="badge badge-info">'.$task_priority.'</span>';
+            } else {
+                $task_priority="--";
+            }
+            
+
+            if ($row->status==6) {
+                $status='Closed';
+                $status='<span class="badge badge-info" style="background-color: #403e40;">'.$status.'</span>';
+            }
+            
+            $data[] = array(
+                // 'id'=>$key+1,
+                'taskid'=>$id,
+                'assign_to'=>$assign_to,
+                'assign_by'=>$assign_by,
+                'title'=>(strlen($title) > 20) ? substr($title,0,20).'...' : $title,
+                'category'=>$category,
+                'status'=>$status,
+                'created_at'=>Carbon::parse($created_at)->format('d-M-Y'),
+                'task_priority'=>$task_priority,
+                'action'=> '<a href="'.route('task_view',[$id]).'"class="btn btn-info">View</a>',
+                ); 
+            
+        }
+## Response
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+
+        return json_encode($response);
+        }else{
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => 0,
+            "iTotalDisplayRecords" => 0,
+            "aaData" => []
+        );
+
+        return json_encode($response);
+       }
+       
     }
 
 }

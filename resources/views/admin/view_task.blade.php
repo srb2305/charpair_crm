@@ -109,6 +109,13 @@
                                             selected=""
                                             @endif
                                         >Not Completed</option>
+                                    @if (Auth::user()->role_id === 1)
+                                        <option  value="6" 
+                                            @if($val->status == 6)
+                                            selected=""
+                                            @endif
+                                        >Closed</option>
+                                    @endif
                                     </select>
                                 </div>
                                 <div class="col-lg-2">

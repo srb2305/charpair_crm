@@ -125,6 +125,9 @@ Route::post('taskStatus','TaskController@taskStatusUpdate')->name('taskStatus');
 
 Route::post('/task_update','TaskController@taskUpdate')->name('task_update');
 
+Route::get('/closed_task','TaskController@closedTaskIndex')->name('closed_task');
+Route::post('/closeTaskData','TaskController@closeTaskTableData')->name('closeTaskData');
+
 //settings
 //comments
 Route::get('/comments','SettingController@index')->name('comments');
