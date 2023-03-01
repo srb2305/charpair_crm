@@ -15,8 +15,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class LeadController extends Controller
 {
     public function index(){
-    
-    	return view('admin/leads');
+        
+        $dataComment=DB::table('predefine_comments')->get();
+        $dataLead=DB::table('lead_task')->get();
+
+    	return view('admin/leads',compact('dataComment','dataLead'));
     }
 
     public function leadadd()
@@ -95,6 +98,10 @@ class LeadController extends Controller
          $row = $_POST['start'];
          $rowperpage = $_POST['length']; // Rows display per page
 
+## Custom Field value
+        $searchByResponse = $_POST['searchByResponse'];
+        $searchByLeads = $_POST['searchByLeads'];
+        // dd($searchByLeads);
 ## Search
         $searchQuery    = isset( $request['search']['value'] ) ? $request['search']['value'] : '';
 
@@ -110,10 +117,21 @@ class LeadController extends Controller
                   ->orWhere('leads.name', 'like', '%'.$searchQuery.'%');
             });
                 }
-        
 
 ## Total number of records with filtering
-      
+        if($searchByResponse != ''){
+
+            $check= $check->where('leads.last_comment','LIKE', '%'.$searchByResponse.'%');
+        }
+
+        if($searchByLeads != ''){
+
+            $leads=DB::table('lead_task')->where('id',$searchByLeads)->first();
+                $from=$leads->lead_from;
+                $to=$leads->lead_to;
+
+            $check= $check->whereBetween('leads.id', [$from, $to]);
+        }
 
 
         $totalRecords = $check->count();
@@ -129,7 +147,8 @@ class LeadController extends Controller
                     'leads.email',
                     'users.name as added_byname',
                     'leads.status',
-                    'leads.last_call'
+                    'leads.last_call',
+                    'leads.last_comment'
                 ]);
         
 
@@ -143,6 +162,7 @@ class LeadController extends Controller
             $email = $row->email;
             $added_by = $row->added_byname;
             $created_at = $row->last_call;
+            $comment = !empty($row->last_comment) ? $row->last_comment : '--' ;
             if (!empty($created_at)) {
                     $created_at = (strtotime($created_at));
                     $created_date = date('d-M', $created_at);
@@ -169,6 +189,7 @@ class LeadController extends Controller
                 'email'=>$email,
                 'added_by'=>$added_by,
                 'created_at'=>$created_at,
+                'comment'=>$comment,
                 'status'=>$status,
                 'action'=> "<a style='float: left; color: blue;' href=\"javascript:;\" onclick=\"getData(".$id.");\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"View\">
                         <div class=\"icon-container\">
@@ -344,12 +365,15 @@ class LeadController extends Controller
         
         $date=Carbon::now()->toDateTimeString();
         
-        Lead::where('id',$id)->update(['last_call'=>$date]); 
+        Lead::where('id',$id)->update([
+                'last_call'=>$date, 
+                'last_comment'=>$comment, 
+            ]); 
 
     	$insert=[
     			'lead_id' => $id,
     			'comment' => $comment,
-                'next_call' =>Carbon::parse($next_call)->format('Y-m-d'),
+                'next_call' =>!empty($next_call) ? Carbon::parse($next_call)->format('Y-m-d') : null,
     			'added_by' => $adminid,
                 'created_at' => Carbon::now(),
                 'updated_at' => null
@@ -369,5 +393,6 @@ class LeadController extends Controller
         }
         return redirect()->back();
     }
+
 }
 

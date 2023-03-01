@@ -4,6 +4,40 @@
     <div class="row layout-top-spacing">
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-6">
+                <div class="row container">
+                                <label class="switch s-primary  mb-4 mr-2" data-toggle="collapse" data-target="#demo">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>Filters
+                    <div class="collapse col-lg-12" id="demo">
+                        <div class="row">
+                            <!-- <div class="col-lg-4" style="float: left;">
+                                <input id="searchByDate" class="form-control flatpickr flatpickr-input active" name="date" type="text" placeholder="Select Date..">
+                            </div> -->
+                            <div class="col-lg-4" style="float: left;">
+                                <select name="comment" id="searchByResponse" class="form-control">
+                                    <option value="">Please select Response</option>
+                                    @foreach($dataComment as $key=>$value)
+                                    <option value="{{$value->comment}}">{{ $value->comment }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-4" style="float: left;">
+                                <select name="leads" id="searchByLeads" class="form-control">
+                                    <option value="">Please select Leads</option>
+                                    @if(isset($dataLead))
+                                    @foreach($dataLead as $key=>$val)
+                                    <option value="{{ $val->id }}">{{ $val->lead_from }} to {{ $val->lead_to }}</option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+
+                        <dir class="clearfix"></dir>
+                        
+                    </div>    
+                </div>
                 <div class="col-lg-12">
                     <a href="{{ route('leads_add') }}" class="btn btn-primary" style="float: right; margin-top: 10px; margin-left: 10px;">Add Leads</a>
                 <?php $check=Auth::user()->id ?>
@@ -22,6 +56,7 @@
                             <th>Email</th>
                             <th>Added By</th>
                             <th>Last Call</th>
+                            <th>Response</th>
                             <th>Status</th>
                             <th>Action</th>
                            
@@ -80,11 +115,15 @@
                 'data': function(data){
           
                         // Read values
+                        var comment = $('#searchByResponse').val();
+                        var leads = $('#searchByLeads').val();
                         var date = $('#searchByDate').val();
                         var review_category = $('#searchByCategory').val();
                         var rating = $('#searchByRating').val();
 
                         // Append to data
+                        data.searchByResponse = comment;
+                        data.searchByLeads = leads;
                         data.searchByDate = date;
                         data.searchByCategory = review_category;
                         data.searchByRating = rating;
@@ -98,6 +137,7 @@
                     { data: 'email' },
                     { data: 'added_by' },
                     { data: 'created_at' },
+                    { data: 'comment' },
                     { data: 'status' },
                     { data: 'action' },
                     ]
@@ -112,6 +152,12 @@
             });
 
             $('#searchByRating').change(function(){
+                dataTable.draw();
+            });
+            $('#searchByResponse').change(function(){
+                dataTable.draw();
+            });
+            $('#searchByLeads').change(function(){
                 dataTable.draw();
             });
 
