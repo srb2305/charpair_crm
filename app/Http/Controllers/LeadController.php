@@ -186,7 +186,7 @@ class LeadController extends Controller
                 'leadid'=>$id,
                 'name'=>$name,
                 'contact'=>"<a href=".$url.$contact.">$contact</a>",
-                'email'=>$email,
+                'email'=>(strlen($email) > 15) ? substr($email,0,15).'...' : $email,
                 'added_by'=>$added_by,
                 'created_at'=>$created_at,
                 'comment'=>$comment,

@@ -106,6 +106,7 @@
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
+                'stateSave': true,
                 'searching': true, 
                 'ajax': {
                     'headers': {
@@ -124,9 +125,7 @@
                         // Append to data
                         data.searchByResponse = comment;
                         data.searchByLeads = leads;
-                        data.searchByDate = date;
-                        data.searchByCategory = review_category;
-                        data.searchByRating = rating;
+                        
                     }
                 },
                 'columns': [
@@ -143,17 +142,6 @@
                     ]
             });
 
-            $('#searchByDate').change(function(){
-                dataTable.draw();
-            });
-
-            $('#searchByCategory').change(function(){
-                dataTable.draw();
-            });
-
-            $('#searchByRating').change(function(){
-                dataTable.draw();
-            });
             $('#searchByResponse').change(function(){
                 dataTable.draw();
             });
@@ -220,10 +208,13 @@
                     url: "{{ route('addcomment') }}",
                     data: $('#comment').serialize(),
                     success: function(response){
-                        console.log(response)
+                        // console.log(response)
                         var id = $('#user_id').val();
                         getData(id);
-                        dataTable.ajax.reload();
+                        // draw.location.reload();
+                         //dataTable.draw.reload();
+                        // dataTable.ajax.draw.reload();
+                        dataTable.ajax.reload(null, false);
                     },
                     error: function(error){
                         console.log(error)
