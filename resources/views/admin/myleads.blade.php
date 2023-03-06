@@ -2,7 +2,7 @@
 @section('content')
 <div class="layout-px-spacing">
     <div class="row layout-top-spacing">
-        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing" style="margin-top: 17px;">
             <div class="widget-content widget-content-area br-6">
                 @if(\session()->has('message'))
                     <div class="alert alert-info">
