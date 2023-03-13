@@ -211,6 +211,8 @@
                         // console.log(response)
                         var id = $('#user_id').val();
                         getData(id);
+                        $('#exampleModalCenter').modal('hide');
+                        alert("Comment Saved");
                         // draw.location.reload();
                          //dataTable.draw.reload();
                         // dataTable.ajax.draw.reload();

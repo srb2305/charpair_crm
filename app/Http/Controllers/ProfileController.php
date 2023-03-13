@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 use App\User;
 use Auth;
 
@@ -63,8 +64,7 @@ class ProfileController extends Controller
 
 	
        $update= User::where('id', $id)
-                ->update(['name'=>$name, 'username'=>$username,'email' =>$email, 'mobile' =>$mobile,'gender' =>$gender, 'image' =>$fileNameToStore], 'updated_at' => Carbon::now()
-);
+                ->update(['name'=>$name, 'username'=>$username,'email' =>$email, 'mobile' =>$mobile,'gender' =>$gender, 'image' =>$fileNameToStore, 'updated_at' => Carbon::now()]);
 
        return redirect('profile')->with('message','Your Profile has been Updated Successfully');
 
